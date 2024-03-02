@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+{{ form_row(form.title) }}
+{{ form_row(form.amount) }}
+{{ form_row(form.photo) }}
+{{ form_row(form.created_at) }}
+    <button type="submit">Créer</button>
+{{ form_end(form) }}
+{% endblock %}
