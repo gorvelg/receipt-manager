@@ -12,13 +12,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TicketController extends AbstractController
 {
-    #[Route('/ticket', name: 'app_ticket')]
-    public function index(): Response
-    {
-        return $this->render('ticket/index.html.twig', [
-            'controller_name' => 'TicketController',
-        ]);
-    }
     #[Route('/ticket/{ticket}', name: 'app_ticket', methods: ['GET', 'POST'])]
     public function setTicket(Request $request, EntityManagerInterface $em, Ticket $ticket = null) : Response
     {
@@ -38,4 +31,12 @@ class TicketController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    #[Route('/ticket/{ticket}', name: 'app_ticket_delete', methods: 'DELETE')]
+    public function index(Request $request, EntityManagerInterface $em, Ticket $ticket): Response
+    {
+        $em->remove($ticket);
+        $em->flush();
+        return $this->redirectToRoute('app_index');
+    }
+
 }

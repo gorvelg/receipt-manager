@@ -1,6 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
+    <a href="{{ path('app_ticket') }}">Ajouter un ticket</a>
+    <h2>Mes tickets</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Montant</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.title }}</td>
+                    <td>{{ ticket.amount }}</td>
+                    <td>{{ ticket.createdAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('app_ticket', {'ticket': ticket.id}) }}">Modifier</a>
+                        <a href="{{ path('app_ticket_delete', {'ticket': ticket.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
 {% endblock %}
