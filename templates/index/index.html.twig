@@ -16,15 +16,32 @@
         </thead>
         <tbody>
             {% for ticket in tickets %}
-                <tr>
+                <tr id="ticket-{{ ticket.id }}">
                     <td>{{ ticket.title }}</td>
                     <td>{{ ticket.amount }}</td>
                     <td>{{ ticket.createdAt|date('d/m/Y') }}</td>
                     <td>
                         <a href="{{ path('app_ticket', {'ticket': ticket.id}) }}">Modifier</a>
-                        <a href="{{ path('app_ticket_delete', {'ticket': ticket.id}) }}">Supprimer</a>
+                        <button class="delete" data-ticket-id="{{ ticket.id }}">Supprimer</button>
                     </td>
                 </tr>
             {% endfor %}
     </table>
+    <script>
+        const deleteAction = (elements, callback) => {
+            elements.forEach(button => {
+                button.addEventListener('click', () => {
+                    callback(button)
+                });
+            });
+        }
+
+        deleteAction(document.querySelectorAll('.delete'), (button) => {
+            fetch('/ticket/' + button.dataset.ticketId, {
+                method: 'DELETE',
+            });
+            document.getElementById('ticket-' + button.dataset.ticketId).remove();
+            button.remove();
+        })
+    </script>
 {% endblock %}
