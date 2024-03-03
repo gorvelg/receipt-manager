@@ -32,7 +32,7 @@ class TicketController extends AbstractController
         ]);
     }
     #[Route('/ticket/{ticket}', name: 'app_ticket_delete', methods: 'DELETE')]
-    public function index(Request $request, EntityManagerInterface $em, Ticket $ticket): Response
+    public function removeTicket(Request $request, EntityManagerInterface $em, Ticket $ticket): Response
     {
         $em->remove($ticket);
         $em->flush();
