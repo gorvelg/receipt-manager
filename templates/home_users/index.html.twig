@@ -3,7 +3,12 @@
 {% block title %}Hello HomeUsersController!{% endblock %}
 
 {% block body %}
-    {% for userInHome in usersInHomes %}
-        <h1>{{ userInHome.username }}</h1>
+    {% for foyerName, users in usersByFoyer %}
+        <h3 class="font-bold">{{ foyerName }}</h3>
+        <ul>
+            {% for user in users %}
+                <li>{{ user.username }}</li>
+            {% endfor %}
+        </ul>
     {% endfor %}
 {% endblock %}

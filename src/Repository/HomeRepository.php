@@ -24,6 +24,16 @@ class HomeRepository extends ServiceEntityRepository
     //    /**
     //     * @return Home[] Returns an array of Home objects
     //     */
+    public function findHomesByUser(int $userId): array
+    {
+        return $this->createQueryBuilder('home')
+            ->join('home.users', 'user')
+            ->where('user.id = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    public function findByExampleField($value): array
     //    {
     //        return $this->createQueryBuilder('h')
