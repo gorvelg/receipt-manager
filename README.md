@@ -26,39 +26,35 @@ L'application offre la possibilité de télécharger des tickets de caisse, perm
 
 ## Base de données
 
-| Table: User |          |                  
-|-------------|----------|------------------| 
-| Column      | Type     | Constraints      |
-|-------------|----------|------------------|
-| id          | integer  | primary key      |
-| username    | varchar  |                  |
-| role        | varchar  |                  |
-| email       | varchar  |                  |
+### Table: User
+| Column   | Type     | Constraints |
+|----------|----------|-------------|
+| id       | integer  | primary key |
+| username | varchar  |             |
+| role     | varchar  |             |
+| email    | varchar  |             |
 
-| Table: Ticket    |           |                  
-|------------------|-----------|------------------| 
-| Column           | Type      | Constraints      |
-|------------------|-----------|------------------|
-| id               | integer   | primary key      |
-| title            | varchar   |                  |
-| photo            | image     |                  |
-| amount           | float     |                  |
-| user_id          | integer   |                  |
-| created_at       | timestamp |                  |
+### Table: Ticket
+| Column     | Type      | Constraints |
+|------------|-----------|-------------|
+| id         | integer   | primary key |
+| title      | varchar   |             |
+| photo      | image     |             |
+| amount     | float     |             |
+| user_id    | integer   |             |
+| created_at | timestamp |             |
 
+### Table: Foyer
+| Column | Type    | Constraints |
+|--------|---------|-------------|
+| id     | integer | primary key |
+| name   | varchar |             |
 
-| Table: foyer     |              |                   
-|------------------|--------------|------------------|
-| Column           | Type         | Constraints      |
-| id               | integer      | primary key      |
-| name             | varchar      |                  |
-
-
-| Table: foyer_user |              |                   
-|-------------------|--------------|------------------|
-| Column            | Type         | Constraints      |
-| user_id           | integer      |                  |
-| foyer_id          | integer      |                  |
+### Table: Foyer_User
+| Column  | Type    | Constraints |
+|---------|---------|-------------|
+| user_id | integer |             |
+| foyer_id| integer |             |
 
 
 Ref: ticket.user_id > user.id // many-to-one
