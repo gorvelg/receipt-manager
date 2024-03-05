@@ -41,31 +41,6 @@ class HomeUsersController extends AbstractController
 
 
 
-
-
-
-//        $user = $this->getUser();
-//
-//            if (!$user) {
-//
-//            }
-//
-//            $homes = $user->getFoyer();
-//
-//
-//            $usersInHomes = [];
-//
-//            foreach ($homes as $home) {
-//                $usersCollection = $home->getUsers();
-//
-//                if (!$usersCollection->isInitialized()) {
-//                    $usersCollection->initialize();
-//                }
-//
-//                $usersInHomes = array_merge($usersInHomes, $usersCollection->toArray());
-//            }
-
-
         return $this->render('home_users/index.html.twig', [
             'usersByFoyer' => $usersByFoyer,
 
