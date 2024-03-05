@@ -1,13 +1,16 @@
-const deleteButton = document.querySelectorAll('.delete');
-
-deleteButton.forEach(button => {
-    button.addEventListener('click', () => {
-        fetch('/ticket/' + button.dataset.ticketId, {
-            method: 'DELETE',
+const deleteAction = (elements, callback) => {
+    elements.forEach(button => {
+        button.addEventListener('click', () => {
+            callback(button)
         });
-        document.getElementById('ticket-' + button.dataset.ticketId).remove();
-        button.remove();
     });
-});
+}
 
+deleteAction(document.querySelectorAll('.delete'), (button) => {
+    fetch('/ticket/' + button.dataset.ticketId, {
+        method: 'DELETE',
+    });
+    document.getElementById('ticket-' + button.dataset.ticketId).remove();
+    button.remove();
+})
 
