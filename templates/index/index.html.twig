@@ -11,6 +11,7 @@
                 <th>Nom</th>
                 <th>Montant</th>
                 <th>Date</th>
+                <th>Utilisateur</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                     <td>{{ ticket.title }}</td>
                     <td>{{ ticket.amount }}</td>
                     <td>{{ ticket.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ ticket.user.username }}</td>
                     <td>
                         <a href="{{ path('app_ticket', {'ticket': ticket.id}) }}">Modifier</a>
                         <button class="delete" data-ticket-id="{{ ticket.id }}">Supprimer</button>
@@ -27,7 +29,7 @@
                 </tr>
             {% endfor %}
     </table>
-{#    <span>Différence: {{ totalAmount }}</span>#}
+    <span>Différence: {{ total }}</span>
     <script>
         const deleteAction = (elements, callback) => {
             elements.forEach(button => {

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Home;
 use App\Entity\Ticket;
 use App\Service\TicketService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,11 +25,13 @@ class IndexController extends AbstractController
     public function index(): Response
     {
         $tickets = $this->em->getRepository(Ticket::class)->findAll();
+        $total = $this->ticketService->subtractionOfTicketsAmount(1, 2);
 
 
         return $this->render('index/index.html.twig', [
 
             'tickets' => $tickets,
+            'total' => $total,
 
         ]);
     }
