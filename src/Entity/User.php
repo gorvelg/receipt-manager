@@ -37,13 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'user')]
     private Collection $tickets;
 
-    #[ORM\ManyToMany(targetEntity: Home::class, inversedBy: 'users')]
-    private Collection $foyer;
+
 
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
-        $this->foyer = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,29 +149,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Home>
-     */
-    public function getFoyer(): Collection
-    {
-        return $this->foyer;
-    }
-
-    public function addFoyer(Home $foyer): static
-    {
-        if (!$this->foyer->contains($foyer)) {
-            $this->foyer->add($foyer);
-        }
-
-        return $this;
-    }
-
-    public function removeFoyer(Home $foyer): static
-    {
-        $this->foyer->removeElement($foyer);
-
-        return $this;
-    }
 
 
 }
