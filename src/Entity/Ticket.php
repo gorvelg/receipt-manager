@@ -29,6 +29,11 @@ class Ticket
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;

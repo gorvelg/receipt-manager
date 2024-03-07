@@ -37,6 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'user')]
     private Collection $tickets;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Home $home = null;
+
+
+
 
 
     public function __construct()
@@ -148,6 +153,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getHome(): ?Home
+    {
+        return $this->home;
+    }
+
+    public function setHome(?Home $home): static
+    {
+        $this->home = $home;
+
+        return $this;
+    }
+
+
 
 
 

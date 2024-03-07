@@ -17,11 +17,13 @@ class TicketController extends AbstractController
     {
         if (!$ticket) {
             $ticket = new Ticket();
+            $ticket->setUser($this->getUser());
         }
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em->persist($ticket);
             $em->flush();
             return $this->redirectToRoute('app_index');

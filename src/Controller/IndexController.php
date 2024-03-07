@@ -25,7 +25,8 @@ class IndexController extends AbstractController
     public function index(): Response
     {
         $tickets = $this->em->getRepository(Ticket::class)->findAll();
-        $total = $this->ticketService->subtractionOfTicketsAmount(1, 2);
+        $total = $this->ticketService->subtractionOfTicketsAmount();
+//        dump($this->getUser()->getId());
 
 
         return $this->render('index/index.html.twig', [

@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Ticket;
+use App\Entity\User;
+use App\Repository\HomeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TicketService
@@ -14,23 +16,39 @@ class TicketService
         $this->em = $em;
     }
 
-    public function subtractionOfTicketsAmount(int $userA, int $userB): string
+    public function subtractionOfTicketsAmount(): string
     {
-        $amountA = $this->calculateTotalAmount($this->getUserTickets($userA));
-        $amountB = $this->calculateTotalAmount($this->getUserTickets($userB));
+        $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => 1]);
+//        dump($homeUsers);
 
-        $subtractionResult = ($amountA - $amountB) / 2;
+
+        $userAmount= [];
+        foreach ($homeUsers as $user) {
+            // Utilise la méthode getUserTickets pour obtenir le montant pour chaque utilisateur
+            $userAmount[] = $this->getUserTickets($user);
+
+        }
+
+
+        $subtractionResult = ($userAmount[0] - $userAmount[1]) / 2;
+
 
         return $subtractionResult < 0 ? 'Vous devez payer ' . abs($subtractionResult) . '€' : 'Vous avez droit à un remboursement de ' . $subtractionResult . '€';
-
     }
 
-    private function getUserTickets(int $user): ?array
+    private function getUserTickets(User $user): float
     {
-        return $this->em->getRepository(Ticket::class)->findBy([
-            'user' => $user,
-        ]);
+        // Utilise la méthode getUserTickets pour obtenir le montant pour chaque utilisateur
+        $tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
+
+        // Calcule et retourne le montant total des tickets pour un utilisateur
+        return array_reduce(
+            $tickets,
+            fn($sum, $ticket) => $sum + $ticket->getAmount(),
+            0
+        );
     }
+
 
     private function calculateTotalAmount(?array $tickets): float
     {
