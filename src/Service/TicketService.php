@@ -16,25 +16,28 @@ class TicketService
         $this->em = $em;
     }
 
-    public function subtractionOfTicketsAmount(): string
+    public function subtractionOfTicketsAmount(User $connectedUser): string
     {
         $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => 1]);
-//        dump($homeUsers);
 
 
-        $userAmount= [];
+        $userAmount = [];
+        $totalConnectedUserTickets = $this->calculateTotalAmount($connectedUser->getTickets()->toArray());
+
         foreach ($homeUsers as $user) {
-            // Utilise la méthode getUserTickets pour obtenir le montant pour chaque utilisateur
             $userAmount[] = $this->getUserTickets($user);
-
         }
 
 
+        if ($totalConnectedUserTickets === $userAmount[0]) {
         $subtractionResult = ($userAmount[0] - $userAmount[1]) / 2;
-
+        } else {
+            $subtractionResult = ($userAmount[1] - $userAmount[0]) / 2;
+        }
 
         return $subtractionResult < 0 ? 'Vous devez payer ' . abs($subtractionResult) . '€' : 'Vous avez droit à un remboursement de ' . $subtractionResult . '€';
     }
+
 
     private function getUserTickets(User $user): float
     {
