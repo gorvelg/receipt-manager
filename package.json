@@ -2,7 +2,7 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
-        "@symfony/webpack-encore": "^4.0.0",
+        "@symfony/webpack-encore": "^4.6.1",
         "autoprefixer": "^10.4.18",
         "core-js": "^3.23.0",
         "postcss": "^8.4.35",
@@ -19,6 +19,8 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "encore": "encore"
     }
+
 }
