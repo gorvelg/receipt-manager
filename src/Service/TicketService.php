@@ -20,14 +20,12 @@ class TicketService
     {
         $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => 1]);
 
-
         $userAmount = [];
         $totalConnectedUserTickets = $this->calculateTotalAmount($connectedUser->getTickets()->toArray());
 
         foreach ($homeUsers as $user) {
             $userAmount[] = $this->getUserTickets($user);
         }
-
 
         if ($totalConnectedUserTickets === $userAmount[0]) {
         $subtractionResult = ($userAmount[0] - $userAmount[1]) / 2;
@@ -58,7 +56,6 @@ class TicketService
         if (!$tickets) {
             return 0;
         }
-
         return array_reduce(
             $tickets,
             fn($sum, $ticket) => $sum + $ticket->getAmount(),
