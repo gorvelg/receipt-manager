@@ -33,6 +33,7 @@ class TotalAmountController extends AbstractController
             $this->em->persist($totalAmount);
             $this->em->flush();
         }
+        $this->removeAllTickets();
 
         return $this->render('total_amount/index.html.twig', [
 
@@ -58,6 +59,15 @@ class TotalAmountController extends AbstractController
             ];
         }
         return $userAmount;
+    }
+
+    private function removeAllTickets(): void
+    {
+        $tickets = $this->em->getRepository(Ticket::class)->findAll();
+        foreach ($tickets as $ticket) {
+            $this->em->remove($ticket);
+        }
+        $this->em->flush();
     }
 
 
