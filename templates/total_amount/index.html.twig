@@ -1,7 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TotalAmountController!{% endblock %}
+{% block title %}Historique{% endblock %}
 
 {% block body %}
-    <p>test</p>
+   <h2>Historique</h2>
+    <table class="table">
+         <thead>
+              <tr>
+                <th>Date</th>
+                <th>Utilisateur</th>
+                <th>Montant</th>
+              </tr>
+         </thead>
+         <tbody>
+              {% for archive in archives %}
+                <tr>
+                    <td>{{ archive.date|date('Y-m-d') }}</td>
+                    <td>{{ archive.user }}</td>
+                    <td>{{ archive.total }}</td>
+                </tr>
+              {% endfor %}
+         </tbody>
 {% endblock %}

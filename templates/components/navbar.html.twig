@@ -1,8 +1,8 @@
 {% if app.user %}
     <nav class="flex p-4 bg-blue-500 text-white">
         <ul class="flex gap-4">
-            <li><a href="{{ path('app_index') }}">Accueil</a></li>
-            <li><a href="{{ path('app_index') }}">Mes tickets</a></li>
+            <li><a href="{{ path('app_index') }}">Tickets</a></li>
+            <li><a href="{{ path('app_archive') }}">Historique</a></li>
             <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
         </ul>
     </nav>
