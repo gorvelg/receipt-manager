@@ -6,11 +6,17 @@
     <a href="{{ path('app_ticket') }}" class="absolute bottom-0 right-0 m-4">
         {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
     </a>
-    <h2 class="text-gray-800 font-medium text-2xl">Mes tickets</h2>
+    <div class="bubble-infos rounded-md
+            {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-teal-400 text-teal-950'}}
+          "
+         id="total">
+        <p class="p-2">{{ total < 0 ? 'Vous devez ' ~ total|abs ~ ' €': 'Remboursement de ' ~ total ~' €'}}</p>
+    </div>
+    <h2 class="text-gray-800 font-medium text-2xl mt-4">Mes tickets</h2>
     <table class="w-full">
         <tbody>
             {% for ticket in tickets %}
-                <tr id="ticket-{{ ticket.id }}">
+                <tr style="--bg-color: {{ ticket.user.color }}" id="ticket-{{ ticket.id }}">
                     <td class="px-2 py-1 truncate max-w-20">{{ ticket.title }}</td>
                     <td class="px-2 py-1 truncate ">{{ ticket.amount }} €</td>
                     <td class="px-2 py-1 truncate ">{{ ticket.createdAt|date('d/m/Y') }}</td>
@@ -22,7 +28,20 @@
                 </tr>
             {% endfor %}
     </table>
-    <span id="total">Différence: {{ total }}</span>
+    <style>
+        tr:before, tr:before{
+            content: '';
+            height: 40px;
+            width: 3px;
+            display: block;
+        }
+        tr:before{
+            background-color: var(--bg-color);
+        }
+        .bubble-infos:before{
+            background-color: var(--bg-color);
+        }
+    </style>
 
 {% endblock %}
 
