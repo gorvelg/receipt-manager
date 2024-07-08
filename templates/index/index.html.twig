@@ -3,28 +3,21 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_ticket') }}">Ajouter un ticket</a>
-    <h2>Mes tickets</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Montant</th>
-                <th>Date</th>
-                <th>Utilisateur</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+    <a href="{{ path('app_ticket') }}" class="absolute bottom-0 right-0 m-4">
+        {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
+    </a>
+    <h2 class="text-gray-800 font-medium text-2xl">Mes tickets</h2>
+    <table class="w-full">
         <tbody>
             {% for ticket in tickets %}
                 <tr id="ticket-{{ ticket.id }}">
-                    <td>{{ ticket.title }}</td>
-                    <td>{{ ticket.amount }}</td>
-                    <td>{{ ticket.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ ticket.user.username }}</td>
-                    <td>
-                        <a href="{{ path('app_ticket', {'ticket': ticket.id}) }}">Modifier</a>
-                        <button class="delete" data-ticket-id="{{ ticket.id }}">Supprimer</button>
+                    <td class="px-2 py-1 truncate max-w-20">{{ ticket.title }}</td>
+                    <td class="px-2 py-1 truncate ">{{ ticket.amount }} €</td>
+                    <td class="px-2 py-1 truncate ">{{ ticket.createdAt|date('d/m/Y') }}</td>
+                    <td class="px-2 py-1 truncate ">{{ ticket.user.username }}</td>
+                    <td class="px-2 py-1 truncate ">
+                        <a class="inline-block" href="{{ path('app_ticket', {'ticket': ticket.id}) }}">{% include ('@icons/pen.svg') %}</a>
+                        <button class="delete inline-block" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
                     </td>
                 </tr>
             {% endfor %}
@@ -32,3 +25,4 @@
     <span id="total">Différence: {{ total }}</span>
 
 {% endblock %}
+
