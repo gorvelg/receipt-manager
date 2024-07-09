@@ -3,32 +3,56 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_ticket') }}">Ajouter un ticket</a>
-    <h2>Mes tickets</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Montant</th>
-                <th>Date</th>
-                <th>Utilisateur</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <h2 class="text-text-800 font-medium text-3xl my-4">Bonjour <span class="capitalize">{{ app.user.username }}</span> ! 👋</h2>
+    <a href="{{ path('app_ticket') }}" class="absolute bottom-0 right-0 m-4">
+        {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
+    </a>
+    <div class="bubble-infos rounded-md
+            {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-primary-200 text-teal-950'}}
+          "
+         id="total">
+        <p class="p-2">
+            {% if total < 0 %}
+                Vous devez <span class="font-bold">{{ total|abs }} €</span>
+            {% else %}
+                Remboursement de <span class="font-bold">{{ total }} €</span>
+            {% endif %}
+        </p>
+
+    </div>
+    <div class="bg-primary-200 rounded-md py-2 pl-2 my-4">
+        <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
+        <table class="w-full text-text-800">
+            <tbody>
             {% for ticket in tickets %}
-                <tr id="ticket-{{ ticket.id }}">
-                    <td>{{ ticket.title }}</td>
-                    <td>{{ ticket.amount }}</td>
-                    <td>{{ ticket.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ ticket.user.username }}</td>
-                    <td>
-                        <a href="{{ path('app_ticket', {'ticket': ticket.id}) }}">Modifier</a>
-                        <button class="delete" data-ticket-id="{{ ticket.id }}">Supprimer</button>
+                <tr class="hover:bg-primary-300" style="--bg-color: {{ ticket.user.color }}" id="ticket-{{ ticket.id }}">
+                    <td class="px-2 py-1 truncate max-w-20">{{ ticket.title }}</td>
+                    <td class="px-2 py-1 truncate ">{{ ticket.amount }} €</td>
+                    <td class="px-2 py-1 truncate ">{{ ticket.createdAt|date('d/m/Y') }}</td>
+                    <td class="px-2 py-1 truncate ">{{ ticket.user.username }}</td>
+                    <td class="px-2 py-1 truncate ">
+                        <a class="inline-block" href="{{ path('app_ticket', {'ticket': ticket.id}) }}">{% include ('@icons/pen.svg') %}</a>
+                        <button class="delete inline-block" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
                     </td>
                 </tr>
             {% endfor %}
-    </table>
-    <span id="total">Différence: {{ total }}</span>
+        </table>
+    </div>
+
+    <style>
+        tr:before, tr:before{
+            content: '';
+            height: 40px;
+            width: 3px;
+            display: block;
+        }
+        tr:before{
+            background-color: var(--bg-color);
+        }
+        .bubble-infos:before{
+            background-color: var(--bg-color);
+        }
+    </style>
 
 {% endblock %}
+

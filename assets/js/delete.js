@@ -7,14 +7,20 @@ const deleteAction = (elements, callback) => {
 }
 
 deleteAction(document.querySelectorAll('.delete'), (button) => {
+    console.log('Button clicked:', button.dataset.ticketId);
     fetch('/ticket/' + button.dataset.ticketId, {
         method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': 'your-csrf-token', // Si vous utilisez un token CSRF
+            'Content-Type': 'application/json'
+        }
     })
         .then(response => {
+            console.log('Delete response status:', response.status);
             if (response.ok) {
+                console.log('Ticket successfully deleted');
                 // Supprimer la ligne du ticket
                 document.getElementById('ticket-' + button.dataset.ticketId).remove();
-                button.remove();
 
                 // Mettre à jour le total en AJAX
                 fetch('/update-total', {
@@ -30,7 +36,9 @@ deleteAction(document.querySelectorAll('.delete'), (button) => {
                         console.error('Il y a eu un problème avec l\'opération fetch :', error);
                     });
             } else {
-                console.error('Il y a eu un problème avec la suppression du ticket.');
+                response.json().then(data => {
+                    console.error('Erreur lors de la suppression du ticket:', data.error);
+                });
             }
         })
         .catch(error => {
