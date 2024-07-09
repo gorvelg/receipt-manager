@@ -29,7 +29,7 @@ deleteAction(document.querySelectorAll('.delete'), (button) => {
                     .then(response => response.text())
                     .then(total => {
                         // Mettez à jour l'affichage du total sur la page
-                        document.getElementById('total').innerText = 'Différence: ' + total;
+                        document.getElementById('total').innerText = total + ' €';
                         console.log('Nouveau total :', total);
                     })
                     .catch(error => {
