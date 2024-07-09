@@ -3,12 +3,12 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <h2 class="text-gray-800 font-medium text-3xl my-4">Bonjour <span class="capitalize">{{ app.user.username }}</span> ! 👋</h2>
+    <h2 class="text-text-800 font-medium text-3xl my-4">Bonjour <span class="capitalize">{{ app.user.username }}</span> ! 👋</h2>
     <a href="{{ path('app_ticket') }}" class="absolute bottom-0 right-0 m-4">
         {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
     </a>
     <div class="bubble-infos rounded-md
-            {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-teal-400 text-teal-950'}}
+            {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-primary-200 text-teal-950'}}
           "
          id="total">
         <p class="p-2">
@@ -20,11 +20,12 @@
         </p>
 
     </div>
-    <h2 class="text-gray-800 font-medium text-2xl my-4">Mes tickets</h2>
-    <table class="w-full">
-        <tbody>
+    <div class="bg-primary-200 rounded-md py-2 pl-2 my-4">
+        <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
+        <table class="w-full text-text-800">
+            <tbody>
             {% for ticket in tickets %}
-                <tr style="--bg-color: {{ ticket.user.color }}" id="ticket-{{ ticket.id }}">
+                <tr class="hover:bg-primary-300" style="--bg-color: {{ ticket.user.color }}" id="ticket-{{ ticket.id }}">
                     <td class="px-2 py-1 truncate max-w-20">{{ ticket.title }}</td>
                     <td class="px-2 py-1 truncate ">{{ ticket.amount }} €</td>
                     <td class="px-2 py-1 truncate ">{{ ticket.createdAt|date('d/m/Y') }}</td>
@@ -35,7 +36,9 @@
                     </td>
                 </tr>
             {% endfor %}
-    </table>
+        </table>
+    </div>
+
     <style>
         tr:before, tr:before{
             content: '';
