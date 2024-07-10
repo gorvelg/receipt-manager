@@ -3,11 +3,25 @@
 {% block title %}Ticket{% endblock %}
 
 {% block body %}
-{{ form_start(form) }}
-{{ form_row(form.title) }}
-{{ form_row(form.amount) }}
-{{ form_row(form.photo) }}
-{{ form_row(form.created_at) }}
-    <button type="submit">Créer</button>
+    {% set widgetClass = 'flex flex-col border-stone-200 px-3 py-2 border rounded-md w-full' %}
+    {% set labelClass = 'text-sm font-medium ' %}
+    {% set required = 'after:content-["*"] after:text-red-500' %}
+
+{{ form_start(form, {'attr': {'class': 'flex flex-col gap-4'}}) }}
+    {{ form_label(form.title, null, {'label_attr': {'class': labelClass ~ required}}) }}
+    {{ form_widget(form.title, {'attr': {'class': widgetClass}}) }}
+
+    {{ form_label(form.amount, null, {'label_attr': {'class': labelClass ~ required}}) }}
+    {{ form_widget(form.amount, {'attr': {'class': widgetClass}}) }}
+
+    {{ form_label(form.photo, null, {'label_attr': {'class': labelClass}}) }}
+    {{ form_widget(form.photo, {'attr': {'class': widgetClass}}) }}
+
+    {{ form_label(form.created_at, null, {'label_attr': {'class': labelClass ~ required}}) }}
+    {{ form_widget(form.created_at, {'attr': {'class': widgetClass}}) }}
+
+    {{ form_label(form.user, null, {'label_attr': {'class': labelClass ~ required}}) }}
+    {{ form_widget(form.user, {'attr': {'class': widgetClass}}) }}
+    <button class="ease-out duration-300 flex gap-1 items-center text-center justify-center px-3 py-2 border-2 rounded-3xl shadow-white/60 shadow-inner-lg bg-teal-600 hover:bg-teal-500 hover:border-teal-500 active:bg-teal-400 border-teal-600 text-white" type="submit">Créer</button>
 {{ form_end(form) }}
 {% endblock %}
