@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ticket{% endblock %}
+{% block title %}Ajouter un ticket{% endblock %}
 
 {% block body %}
     {% set widgetClass = 'flex flex-col border-stone-200 px-3 py-2 border rounded-md w-full' %}
     {% set labelClass = 'text-sm font-medium ' %}
     {% set required = 'after:content-["*"] after:text-red-500' %}
+
+    <h1 class="text-text-800 font-medium text-3xl mb-4">Ajouter un ticket</h1>
 
 {{ form_start(form, {'attr': {'class': 'flex flex-col gap-4'}}) }}
     {{ form_label(form.title, null, {'label_attr': {'class': labelClass ~ required}}) }}

@@ -32,6 +32,7 @@ class TicketType extends AbstractType
             ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo',
+                'required' => false
 
             ])
             ->add('created_at', DateTimeType::class, [
