@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TicketController extends AbstractController
 {
@@ -26,7 +27,7 @@ class TicketController extends AbstractController
     }
 
     #[Route('/ticket/{ticket}', name: 'app_ticket', methods: ['GET', 'POST'])]
-    public function setTicket(Request $request, EntityManagerInterface $em, Ticket $ticket = null) : Response
+    public function setTicket(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, Ticket $ticket = null) : Response
     {
         if (!$ticket) {
             $ticket = new Ticket();
@@ -36,6 +37,22 @@ class TicketController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $pictureFile = $form->get('photo')->getData();
+
+            if ($pictureFile) {
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
+
+                try {
+                    $pictureFile->move(
+                        $this->getParameter('pictures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {}
+                $ticket->setPhoto($newFilename);
+            }
 
             $em->persist($ticket);
             $em->flush();

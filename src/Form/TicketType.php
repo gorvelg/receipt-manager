@@ -31,6 +31,7 @@ class TicketType extends AbstractType
 
             ])
             ->add('photo', FileType::class, [
+                'data_class' => null,
                 'label' => 'Photo',
                 'required' => false
 
