@@ -39,6 +39,20 @@
         </table>
     </div>
 
+    {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
+
+    <script>
+        const deleteButtons = document.querySelectorAll('.delete');
+        const showDelete = document.getElementById('show-delete');
+
+        showDelete.addEventListener('click', () => {
+            deleteButtons.forEach(button => {
+                button.classList.toggle('hidden');
+            });
+        });
+
+    </script>
+
     <style>
         tr:before, tr:before{
             content: '';

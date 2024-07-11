@@ -53,6 +53,9 @@
             {% elseif type == 'tertiary' %}
                 {{ colorClasses[color]['text'] }}
             {% endif %}"
+        {% if id is defined %}
+                id="{{ id }}"
+        {% endif %}
         {% if props is defined %}
                 {% for key, value in props %}
                         {{ key }}="{{ value }}"
