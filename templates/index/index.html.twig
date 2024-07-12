@@ -22,24 +22,25 @@
     </div>
     <div class="bg-primary-200 rounded-md py-2 pl-2 my-4">
         <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
-        <table class="w-full text-text-800">
-            <tbody>
+        <div class="w-full text-text-800">
             {% for ticket in tickets %}
-                <tr class="hover:bg-primary-300" style="--bg-color: {{ ticket.user.color }}" id="ticket-{{ ticket.id }}">
-                    <td class="px-2 py-1 truncate max-w-20">{{ ticket.title }}</td>
-                    <td class="px-2 py-1 truncate ">{{ ticket.amount }} €</td>
-                    <td class="px-2 py-1 truncate ">{{ ticket.createdAt|date('d/m/Y') }}</td>
-                    <td class="px-2 py-1 truncate ">{{ ticket.user.username }}</td>
-                    <td class="px-2 py-1 truncate ">
-                        <a class="inline-block" href="{{ path('app_ticket', {'ticket': ticket.id}) }}">{% include ('@icons/pen.svg') %}</a>
-                        <button class="delete inline-block" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
-                    </td>
-                </tr>
+                <a href="{{ path('app_ticket', {ticket: ticket.id}) }}">
+                    <div class="hover:bg-primary-300 cursor-pointer grid grid-cols-5 items-center" id="ticket-{{ ticket.id }}" data-url="{{ path('app_ticket', {'ticket': ticket.id}) }}">
+                        <div class="gap-2 py-1 flex items-center truncate max-w-20 before:block before:content-[''] before:w-[3px] before:h-10 before:bg-{{ ticket.user.color }}">{{ ticket.title }}</div>
+                        <div class="px-2 py-1 truncate">{{ ticket.amount }} €</div>
+                        <div class="px-2 py-1 truncate">{{ ticket.createdAt|date('d/m/Y') }}</div>
+                        <div class="px-2 py-1 truncate">{{ ticket.user.username }}</div>
+                        <div class="px-2 py-1 truncate">
+                            <button class="delete hidden" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
+                        </div>
+                    </div>
+                </a>
             {% endfor %}
-        </table>
+        </div>
     </div>
-
-    {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
+    {% if tickets %}
+        {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
+    {% endif %}
 
     <script>
         const deleteButtons = document.querySelectorAll('.delete');
