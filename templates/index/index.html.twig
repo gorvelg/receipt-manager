@@ -31,7 +31,7 @@
                         <div class="px-2 py-1 truncate">{{ ticket.createdAt|date('d/m/Y') }}</div>
                         <div class="px-2 py-1 truncate">{{ ticket.user.username }}</div>
                         <div class="px-2 py-1 truncate">
-                            <button class="delete hidden" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
+                            <button class="delete animate-[wiggle_1s_ease-in-out_infinite] hidden" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
                         </div>
                     </div>
                 </a>
