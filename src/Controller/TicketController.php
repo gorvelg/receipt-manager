@@ -29,9 +29,12 @@ class TicketController extends AbstractController
     #[Route('/ticket/{ticket}', name: 'app_ticket', methods: ['GET', 'POST'])]
     public function setTicket(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, Ticket $ticket = null) : Response
     {
+        $isCreated = true;
+
         if (!$ticket) {
             $ticket = new Ticket();
             $ticket->setUser($this->getUser());
+            $isCreated = false;
         }
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
@@ -60,7 +63,8 @@ class TicketController extends AbstractController
         }
 
         return $this->render('ticket/set.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'isCreated' => $isCreated
         ]);
     }
     #[Route('/ticket/{id}', name: 'app_delete_ticket', methods: ['DELETE'])]
