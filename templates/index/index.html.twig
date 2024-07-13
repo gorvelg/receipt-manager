@@ -24,20 +24,23 @@
         <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
         <div class="w-full text-text-800">
             {% for ticket in tickets %}
-                <a href="{{ path('app_ticket', {ticket: ticket.id}) }}">
-                    <div class="hover:bg-primary-300 cursor-pointer grid grid-cols-5 items-center" id="ticket-{{ ticket.id }}" data-url="{{ path('app_ticket', {'ticket': ticket.id}) }}">
-                        <div class="gap-2 py-1 flex items-center truncate max-w-20 before:block before:content-[''] before:w-[3px] before:h-10 before:bg-{{ ticket.user.color }}">{{ ticket.title }}</div>
-                        <div class="px-2 py-1 truncate">{{ ticket.amount }} €</div>
-                        <div class="px-2 py-1 truncate">{{ ticket.createdAt|date('d/m/Y') }}</div>
-                        <div class="px-2 py-1 truncate">{{ ticket.user.username }}</div>
-                        <div class="px-2 py-1 truncate">
-                            <button class="delete animate-[wiggle_1s_ease-in-out_infinite] hidden" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
-                        </div>
+                <div class="hover:bg-primary-300 cursor-pointer grid grid-cols-5 items-center relative" id="ticket-{{ ticket.id }}" data-url="{{ path('app_ticket', {'ticket': ticket.id}) }}">
+                    <div class="gap-2 py-1 flex items-center truncate relative z-10" style="position: relative;">
+                        <span class="before:block before:content-[''] before:w-[3px] before:h-10" style="background-color: {{ ticket.user.color }};"></span>
+                        {{ ticket.title }}
                     </div>
-                </a>
+                    <div class="px-2 py-1 truncate relative z-10">{{ ticket.amount }} €</div>
+                    <div class="px-2 py-1 truncate relative z-10">{{ ticket.createdAt|date('d/m/Y') }}</div>
+                    <div class="px-2 py-1 truncate relative z-10">{{ ticket.user.username }}</div>
+                    <div class="px-2 py-1 truncate z-20">
+                        <button class="delete hidden animate-[wiggle_1s_ease-in-out_infinite]" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
+                    </div>
+                    <a class="absolute inset-0 z-0" href="{{ path('app_ticket', {'ticket': ticket.id}) }}"></a>
+                </div>
             {% endfor %}
         </div>
     </div>
+
     {% if tickets %}
         {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
     {% endif %}
