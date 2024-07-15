@@ -7,7 +7,7 @@
     <a href="{{ path('app_ticket') }}" class="fixed bottom-0 right-0 m-4">
         {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
     </a>
-    <div class="bubble-infos rounded-md
+    <div class="bubble-infos rounded-md mb-4
             {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-primary-200 text-teal-950'}}
           "
          >
@@ -20,7 +20,12 @@
         </p>
 
     </div>
-    <div class="bg-primary-200 rounded-md py-2 pl-2 my-4">
+    <div class="rounded-md bg-primary-200 p-2 mb-4">
+        {% if tickets %}
+            {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
+        {% endif %}
+    </div>
+    <div class="bg-primary-200 rounded-md py-2 pl-2 mb-4">
         <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
         <div class="w-full text-text-800">
             {% for ticket in tickets %}
@@ -41,9 +46,7 @@
         </div>
     </div>
 
-    {% if tickets %}
-        {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
-    {% endif %}
+
 
     <style>
         .user-tag:before{
