@@ -26,7 +26,7 @@
             {% for ticket in tickets %}
                 <div class="hover:bg-primary-300 cursor-pointer grid grid-cols-5 items-center relative" id="ticket-{{ ticket.id }}" data-url="{{ path('app_ticket', {'ticket': ticket.id}) }}">
                     <div class="gap-2 py-1 flex items-center truncate relative z-10" style="position: relative;">
-                        <span class="before:block before:content-[''] before:w-[3px] before:h-10" style="background-color: {{ ticket.user.color }};"></span>
+                        <span class="user-tag before:block before:content-[''] before:w-[3px] before:h-10" style="--bg-color: {{ ticket.user.color }};"></span>
                         {{ ticket.title }}
                     </div>
                     <div class="px-2 py-1 truncate">{{ ticket.amount }} €</div>
@@ -45,6 +45,12 @@
         {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
     {% endif %}
 
+    <style>
+        .user-tag:before{
+            background-color: var(--bg-color);
+        }
+    </style>
+
     <script>
         const deleteButtons = document.querySelectorAll('.delete');
         const showDelete = document.getElementById('show-delete');
@@ -57,20 +63,6 @@
 
     </script>
 
-    <style>
-        tr:before, tr:before{
-            content: '';
-            height: 40px;
-            width: 3px;
-            display: block;
-        }
-        tr:before{
-            background-color: var(--bg-color);
-        }
-        .bubble-infos:before{
-            background-color: var(--bg-color);
-        }
-    </style>
 
 {% endblock %}
 
