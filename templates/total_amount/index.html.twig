@@ -3,22 +3,24 @@
 {% block title %}Historique{% endblock %}
 
 {% block body %}
-   <h1 class="text-text-800 font-medium text-3xl mb-4">Historique</h1>
+    <h1 class="text-text-800 font-medium text-3xl mb-4">Historique</h1>
     <table class="w-full text-text-800">
-         <thead>
-              <tr>
-                <th>Date</th>
-                <th>Utilisateur</th>
-                <th>Montant</th>
-              </tr>
-         </thead>
-         <tbody>
-              {% for archive in archives %}
-                <tr>
-                    <td class="px-2 py-1 truncate ">{{ archive.date|date('Y-m-d') }}</td>
-                    <td class="px-2 py-1 truncate ">{{ archive.user }}</td>
-                    <td class="px-2 py-1 truncate ">{{ archive.total }}</td>
-                </tr>
-              {% endfor %}
-         </tbody>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Utilisateur</th>
+            <th>Montant</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for archive in archives %}
+            {% set class = (loop.index0 // 2) is even ? 'bg-primary-200' : 'even' %}
+            <tr class="{{ class }}">
+                <td class="px-2 py-1 truncate ">{{ archive.date|date('Y-m-d') }}</td>
+                <td class="px-2 py-1 truncate ">{{ archive.user }}</td>
+                <td class="px-2 py-1 truncate ">{{ archive.total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
