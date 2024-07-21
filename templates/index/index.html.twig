@@ -40,7 +40,7 @@
                     <div class="px-2 py-1 truncate z-20">
                         <button class="delete hidden animate-[wiggle_1s_ease-in-out_infinite]" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
                     </div>
-                    <a class="absolute w-full h-full z-10" href="{{ path('app_ticket', {'ticket': ticket.id}) }}"></a>
+                    <a class="absolute w-full h-full z-10" href="{{ path('app_get_ticket', {'ticket': ticket.id}) }}"></a>
                 </div>
             {% endfor %}
         </div>

@@ -26,7 +26,7 @@ class TicketController extends AbstractController
         $this->logger = $logger;
     }
 
-    #[Route('/ticket/{ticket}', name: 'app_ticket', methods: ['GET', 'POST'])]
+    #[Route('/ticket/set/{ticket}', name: 'app_ticket', methods: ['GET', 'POST'])]
     public function setTicket(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, Ticket $ticket = null) : Response
     {
         $isCreated = true;
@@ -79,6 +79,14 @@ class TicketController extends AbstractController
             $this->logger->error('Error deleting ticket: ' . $e->getMessage());
             return new JsonResponse(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    #[Route('/ticket/{ticket}', name: 'app_get_ticket', methods: ['GET'])]
+    public function getTicket(Ticket $ticket): Response
+    {
+        return $this->render('ticket/get.html.twig', [
+            'ticket' => $ticket,
+        ]);
     }
 
 }
