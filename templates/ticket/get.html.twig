@@ -29,4 +29,8 @@
             <div><img src="{{ asset('uploads/pictures/' ~ ticket.photo) }}" alt="Photo du ticket"></div>
         </div>
     {% endif %}
+    <div class="mt-4">
+        <a href="{{ path('app_ticket', {ticket: ticket.id}) }}">
+            {% include('components/button.html.twig') with {icon: 'pen', text: 'Modifier', type: 'primary', width: 'w-full'} %}
+        </a>
 {% endblock %}

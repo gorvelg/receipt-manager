@@ -42,7 +42,7 @@
 {% set type = type|default('primary') %}
 {% set color = color|default('primary') %}
 
-<button class="{{ commonClass }} {{ typeClasses[type] }}
+<button class="{{ commonClass }} {{ typeClasses[type] }} {{ width|default('w-fit') }}
         {% if type == 'primary' %}
                 {{ colorClasses[color]['bg'] }}
                 {{ colorClasses[color]['border'] }}

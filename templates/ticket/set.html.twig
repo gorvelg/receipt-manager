@@ -7,9 +7,15 @@
     {% set labelClass = 'text-sm font-medium ' %}
     {% set required = 'after:content-["*"] after:text-red-500' %}
 
-    <h1 class="text-text-800 font-medium text-3xl mb-4">
-       {{ isCreated ? 'Modifier un ticket' : 'Ajouter un ticket' }}
-    </h1>
+    <div class="flex justify-between items-center mb-4">
+        <a href="{{ path('app_index') }}">
+            {% include('components/button.html.twig') with {icon: 'arrow-left', type: 'primary'} %}
+        </a>
+        <h1 class="text-text-800 font-medium text-3xl">
+            {{ isCreated ? 'Modifier un ticket' : 'Ajouter un ticket' }}
+        </h1>
+    </div>
+
 
 
 
