@@ -10,7 +10,7 @@
     <div class="bubble-infos rounded-md mb-4
             {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-primary-200 text-teal-950'}}
           "
-         >
+    >
         <p class="p-2">
             {% if total < 0 %}
                 Vous devez <span id="total" class="font-bold">{{ total|abs }} €</span>
@@ -28,7 +28,7 @@
     <div class="bg-primary-200 rounded-md py-2 pl-2 mb-4">
         <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
         <div class="w-full text-text-800">
-            {% for ticket in tickets %}
+            {% for ticket in tickets|sort((a, b) => b.createdAt <=> a.createdAt) %}
                 <div class="hover:bg-primary-300 cursor-pointer grid grid-cols-5 items-center relative" id="ticket-{{ ticket.id }}" data-url="{{ path('app_ticket', {'ticket': ticket.id}) }}">
                     <div class="gap-2 py-1 flex items-center truncate relative z-10" style="position: relative;">
                         <span class="user-tag before:block before:content-[''] before:w-[3px] before:h-10" style="--bg-color: {{ ticket.user.color }};"></span>
@@ -45,8 +45,6 @@
             {% endfor %}
         </div>
     </div>
-
-
 
     <style>
         .user-tag:before{
@@ -65,7 +63,4 @@
         });
 
     </script>
-
-
 {% endblock %}
-
