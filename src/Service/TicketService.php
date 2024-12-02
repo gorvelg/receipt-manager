@@ -18,7 +18,9 @@ class TicketService
 
     public function subtractionOfTicketsAmount(User $connectedUser): string
     {
-        $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => 1]);
+        $homeId = $connectedUser->getHome();
+
+        $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
 
         $userAmount = [];
         $totalConnectedUserTickets = $this->calculateTotalAmount($connectedUser->getTickets()->toArray());
@@ -33,7 +35,7 @@ class TicketService
             $subtractionResult = ($userAmount[1] - $userAmount[0]) / 2;
         }
 
-        return $subtractionResult < 0 ? 'Vous devez payer ' . abs($subtractionResult) . '€' : 'Vous avez droit à un remboursement de ' . $subtractionResult . '€';
+        return $subtractionResult;
     }
 
 

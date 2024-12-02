@@ -22,7 +22,7 @@ class IndexController extends AbstractController
     }
 
 
-    #[Route('/index', name: 'app_index')]
+    #[Route('/home', name: 'app_index')]
     public function index(): Response
     {
         $tickets = $this->em->getRepository(Ticket::class)->findAll();

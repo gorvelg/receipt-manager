@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html class="bg-neutral-100">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('style') }}
         {% endblock %}
 
         {% block javascripts %}
@@ -13,8 +17,12 @@
             {{ encore_entry_script_tags('delete') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="font-display">
+        <div class="background"></div>
         {% include('components/navbar.html.twig') %}
-        {% block body %}{% endblock %}
+        <div class="shadow-sm rounded-md bg-teal-1 p-6 mx-3 md:max-w-screen-md md:m-auto">
+            {% block body %}{% endblock %}
+        </div>
+
     </body>
 </html>

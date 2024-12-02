@@ -3,32 +3,64 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_ticket') }}">Ajouter un ticket</a>
-    <h2>Mes tickets</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Montant</th>
-                <th>Date</th>
-                <th>Utilisateur</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ticket in tickets %}
-                <tr id="ticket-{{ ticket.id }}">
-                    <td>{{ ticket.title }}</td>
-                    <td>{{ ticket.amount }}</td>
-                    <td>{{ ticket.createdAt|date('d/m/Y') }}</td>
-                    <td>{{ ticket.user.username }}</td>
-                    <td>
-                        <a href="{{ path('app_ticket', {'ticket': ticket.id}) }}">Modifier</a>
-                        <button class="delete" data-ticket-id="{{ ticket.id }}">Supprimer</button>
-                    </td>
-                </tr>
-            {% endfor %}
-    </table>
-    <span id="total">Différence: {{ total }}</span>
+    <h1 class="text-text-800 font-medium text-3xl mb-4">Bonjour <span class="capitalize">{{ app.user.username }}</span> ! 👋</h1>
+    <a href="{{ path('app_ticket') }}" class="fixed bottom-0 right-0 m-4">
+        {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
+    </a>
+    <div class="bubble-infos rounded-md mb-4
+            {{ total < 0 ? 'bg-red-100 text-red-950 border-red-200' : 'bg-teal-2 text-teal-950'}}
+          "
+    >
+        <p class="p-2">
+            {% if total < 0 %}
+                Vous devez <span id="total" class="font-bold">{{ total|abs }} €</span>
+            {% else %}
+                Remboursement de <span id="total" class="font-bold">{{ total }} €</span>
+            {% endif %}
+        </p>
 
+    </div>
+    {% if tickets %}
+        <div class="rounded-md bg-teal-2 p-2 mb-4">
+                {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
+        </div>
+    {% endif %}
+    <div class="bg-teal-2 rounded-md py-2 pl-2 mb-4">
+        <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
+        <div class="w-full text-text-800">
+            {% for ticket in tickets|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                <div class="hover:bg-primary-300 cursor-pointer grid grid-cols-5 items-center relative" id="ticket-{{ ticket.id }}" data-url="{{ path('app_ticket', {'ticket': ticket.id}) }}">
+                    <div class="gap-2 py-1 flex items-center truncate relative z-10" style="position: relative;">
+                        <span class="user-tag before:block before:content-[''] before:w-[3px] before:h-10" style="--bg-color: {{ ticket.user.color }};"></span>
+                        {{ ticket.title }}
+                    </div>
+                    <div class="px-2 py-1 truncate">{{ ticket.amount }} €</div>
+                    <div class="px-2 py-1 truncate">{{ ticket.createdAt|date('d/m/Y') }}</div>
+                    <div class="px-2 py-1 truncate">{{ ticket.user.username }}</div>
+                    <div class="px-2 py-1 truncate z-20">
+                        <button class="delete hidden animate-[wiggle_1s_ease-in-out_infinite]" data-ticket-id="{{ ticket.id }}">{% include ('@icons/trash.svg') %}</button>
+                    </div>
+                    <a class="absolute w-full h-full z-10" href="{{ path('app_get_ticket', {'ticket': ticket.id}) }}"></a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .user-tag:before{
+            background-color: var(--bg-color);
+        }
+    </style>
+
+    <script>
+        const deleteButtons = document.querySelectorAll('.delete');
+        const showDelete = document.getElementById('show-delete');
+
+        showDelete.addEventListener('click', () => {
+            deleteButtons.forEach(button => {
+                button.classList.toggle('hidden');
+            });
+        });
+
+    </script>
 {% endblock %}

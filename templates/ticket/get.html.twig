@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TicketController!{% endblock %}
+
+{% block body %}
+    <div class="flex justify-between items-center mb-4">
+        <a href="{{ path('app_index') }}">
+            {% include('components/button.html.twig') with {icon: 'arrow-left', type: 'primary'} %}
+        </a>
+        <h1 class="text-text-800 font-medium text-3xl">Ticket du {{ ticket.createdAt | date("m/d/Y", "Europe/Paris") }}</h1>
+    </div>
+    <div class="mb-4">
+        <div class="grid grid-cols-2">
+            <div>Total du ticket : </div>
+            <div class="font-semibold">{{ ticket.amount }} €</div>
+        </div>
+        <div class="grid grid-cols-2">
+            <div>Magasin : </div>
+            <div>{{ ticket.title }}</div>
+        </div>
+        <div class="grid grid-cols-2">
+            <div>Affilié à : </div>
+            <div>{{ ticket.user.username }}</div>
+        </div>
+    </div>
+
+    {% if ticket.photo %}
+        <div>
+            <div><img src="{{ asset('uploads/pictures/' ~ ticket.photo) }}" alt="Photo du ticket"></div>
+        </div>
+    {% endif %}
+    <div class="mt-4">
+        <a href="{{ path('app_ticket', {ticket: ticket.id}) }}">
+            {% include('components/button.html.twig') with {icon: 'pen', text: 'Modifier', type: 'primary', width: 'w-full'} %}
+        </a>
+{% endblock %}
