@@ -59,7 +59,7 @@ return Command::SUCCESS;
 // Récupérer le total des montants pour chaque utilisateur
 private function getUsersTotal(): array
 {
-$homeUsers = $this->em->getRepository(User::class)->findBy(['home' => 1]);
+$homeUsers = $this->em->getRepository(User::class)->findAll();
 
 $userAmount = [];
 
