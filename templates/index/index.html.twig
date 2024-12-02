@@ -20,12 +20,12 @@
         </p>
 
     </div>
-    <div class="rounded-md bg-primary-200 p-2 mb-4">
+    <div class="rounded-md bg-teal-2 p-2 mb-4">
         {% if tickets %}
             {% include('components/button.html.twig') with {text: 'Supprimer', type: 'primary', id: 'show-delete'} %}
         {% endif %}
     </div>
-    <div class="bg-primary-200 rounded-md py-2 pl-2 mb-4">
+    <div class="bg-teal-2 rounded-md py-2 pl-2 mb-4">
         <h2 class="text-text-800 font-medium text-2xl mb-4">Mes tickets</h2>
         <div class="w-full text-text-800">
             {% for ticket in tickets|sort((a, b) => b.createdAt <=> a.createdAt) %}

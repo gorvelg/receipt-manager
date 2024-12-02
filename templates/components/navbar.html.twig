@@ -1,13 +1,13 @@
 {% if app.user %}
-    <nav class="flex justify-between shadow-sm bg-sky-900 mb-4 text-white">
+    <nav class="flex justify-between shadow-sm bg-teal-9 mb-4 text-white">
         <ul>
             <li class="p-4 border-b-[3px] border-sky-900">
                 <a href="{{ path('app_index') }}">Tickets</a>
             </li>
         </ul>
         <ul class="flex">
-            <li class=" p-4 border-b-[3px] border-sky-900 hover:bg-sky-800 hover:border-b-[3px] hover:border-teal-400"><a href="{{ path('app_archive') }}">Historique</a></li>
-            <li class=" p-4 border-b-[3px] border-sky-900 hover:bg-sky-800 hover:border-b-[3px] hover:border-teal-400"><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
+            <li class=" p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8"><a href="{{ path('app_archive') }}">Historique</a></li>
+            <li class=" p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8"><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
         </ul>
     </nav>
 {% endif %}
