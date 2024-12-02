@@ -18,7 +18,9 @@ class TicketService
 
     public function subtractionOfTicketsAmount(User $connectedUser): string
     {
-        $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => 1]);
+        $homeId = $connectedUser->getHome();
+
+        $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
 
         $userAmount = [];
         $totalConnectedUserTickets = $this->calculateTotalAmount($connectedUser->getTickets()->toArray());
