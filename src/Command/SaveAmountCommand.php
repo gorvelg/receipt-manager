@@ -16,77 +16,77 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class SaveAmountCommand extends Command
 {
-private EntityManagerInterface $em;
+    private EntityManagerInterface $em;
 
-public function __construct(EntityManagerInterface $em)
-{
-$this->em = $em;
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
 
-parent::__construct();
-}
+        parent::__construct();
+    }
 
 
-protected function configure(): void
-{
-$this->setDescription('Calcule et sauvegarde les montants totaux pour chaque utilisateur.');
-}
+    protected function configure(): void
+    {
+        $this->setDescription('Calcule et sauvegarde les montants totaux pour chaque utilisateur.');
+    }
 
-protected function execute(InputInterface $input, OutputInterface $output): int
-{
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
 // Calcul du total des montants pour chaque utilisateur
-$userAmount = $this->getUsersTotal();
+        $userAmount = $this->getUsersTotal();
 
 
 // Sauvegarde des montants totaux
-foreach ($userAmount as $data) {
-$totalAmount = new TotalAmount();
-$totalAmount->setUser($data['user']);
-$totalAmount->setTotal($data['totalAmount']);
-$totalAmount->setDate(new \DateTimeImmutable('now'));
-$this->em->persist($totalAmount);
-}
+        foreach ($userAmount as $data) {
+            $totalAmount = new TotalAmount();
+            $totalAmount->setUser($data['user']);
+            $totalAmount->setTotal($data['totalAmount']);
+            $totalAmount->setDate(new \DateTimeImmutable('now'));
+            $this->em->persist($totalAmount);
+        }
 
-$this->em->flush();
+        $this->em->flush();
 
 // Suppression de tous les tickets
-$this->removeAllTickets();
+        $this->removeAllTickets();
 
-$output->writeln('Les montants ont été sauvegardés et tous les tickets ont été supprimés.');
+        $output->writeln('Les montants ont été sauvegardés et tous les tickets ont été supprimés.');
 
-return Command::SUCCESS;
-}
+        return Command::SUCCESS;
+    }
 
 // Récupérer le total des montants pour chaque utilisateur
-private function getUsersTotal(): array
-{
-$homeUsers = $this->em->getRepository(User::class)->findAll();
+    private function getUsersTotal(): array
+    {
+        $homeUsers = $this->em->getRepository(User::class)->findAll();
 
-$userAmount = [];
+        $userAmount = [];
 
-foreach ($homeUsers as $user) {
-$tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
+        foreach ($homeUsers as $user) {
+            $tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
 // Calcule et retourne le montant total des tickets pour un utilisateur
-$totalAmount = array_reduce(
-$tickets,
-fn($sum, $ticket) => $sum + $ticket->getAmount(),
-0
-);
+            $totalAmount = array_reduce(
+                $tickets,
+                fn($sum, $ticket) => $sum + $ticket->getAmount(),
+                0
+            );
 
-$userAmount[] = [
-'user' => $user->getUsername(),
-'totalAmount' => $totalAmount,
-];
-}
-return $userAmount;
-}
+            $userAmount[] = [
+                'user' => $user->getUsername(),
+                'totalAmount' => $totalAmount,
+            ];
+        }
+        return $userAmount;
+    }
 
 // Supprimer tous les tickets
-private function removeAllTickets(): void
-{
-$tickets = $this->em->getRepository(Ticket::class)->findAll();
-foreach ($tickets as $ticket) {
-$this->em->remove($ticket);
-}
-$this->em->flush();
-}
+    private function removeAllTickets(): void
+    {
+        $tickets = $this->em->getRepository(Ticket::class)->findAll();
+        foreach ($tickets as $ticket) {
+            $this->em->remove($ticket);
+        }
+        $this->em->flush();
+    }
 }
