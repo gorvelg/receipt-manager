@@ -61,7 +61,6 @@ class SaveAmountCommand extends Command
                 ]
             );
         }
-        die();
 
 // Calcul du total des montants pour chaque utilisateur
         $userAmount = $this->getUsersTotal();
