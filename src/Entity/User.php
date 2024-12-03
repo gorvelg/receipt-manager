@@ -43,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $color = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
+
 
 
 
@@ -177,6 +180,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setColor(?string $color): static
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }
