@@ -3,17 +3,41 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <h1 class="text-text-800 font-medium text-3xl mb-4">Inscription</h1>
 
     {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
+    {{ form_start(registrationForm, {'attr': {'class': 'flex flex-col gap-2'}}) }}
+    <div class="flex flex-col">
+        {{ form_label(registrationForm.username, null, {
+            'label_attr': { 'class': "after:content-['*'] after:text-red-500" },
+            'label': 'Prénom'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_widget(registrationForm.username,{
+            'attr': {'class': 'border-stone-200 px-3 py-2 border rounded-md'}
+        }) }}
+    </div>
+    <div class="flex flex-col">
+        {{ form_label(registrationForm.email, null, {
+            'label_attr': { 'class': "after:content-['*'] after:text-red-500" },
+            'label': 'Email'
+        }) }}
+        {{ form_widget(registrationForm.email, {
+            'attr': { 'class': 'border-stone-200 px-3 py-2 border rounded-md'}
+        }) }}
+    </div>
+    <div class="flex flex-col">
+        {{ form_label(registrationForm.plainPassword, null, {
+            'label_attr': { 'class': "after:content-['*'] after:text-red-500" },
+            'label': 'Mot de passe'
+        }) }}
+        {{ form_widget(registrationForm.plainPassword, {
+            'attr': {'class': 'border-stone-200 px-3 py-2 border rounded-md'}
+        }) }}
+    </div>
 
-        <button type="submit" class="btn">Register</button>
+
+
+        <button type="submit" class="ease-out duration-300 flex gap-1 items-center text-center justify-center px-3 py-2 border-2 rounded-3xl shadow-white/60 shadow-inner-lg bg-teal-600 hover:bg-teal-500 hover:border-teal-500 active:bg-teal-400 border-teal-600 text-white">S'inscrire</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
