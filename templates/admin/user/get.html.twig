@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1 class="text-text-800 font-medium text-3xl mb-4">Liste des utilisateurs</h1>
+    <table class="rounded-md py-2 pl-2 mb-4 w-full">
+        <thead>
+            <tr>
+               <th>Email</th>
+               <th>Nom</th>
+               <th>Home ID</th>
+                <th>Couleur</th>
+            </tr>
+        </thead>
+    {% for user in users %}
+        {% set class = (loop.index0) is even ? 'bg-teal-2' : 'even' %}
+        <tr class="{{ class }} hover:bg-primary-300 ">
+            <td class="px-2 py-1 truncate ">{{ user.email }}</td>
+            <td class="px-2 py-1 truncate">{{ user.username }}</td>
+            <td class="px-2 py-1 truncate">{{ user.home.id }}</td>
+            <td class="px-2 py-1 truncate flex gap-2 items-center uppercase">
+                <div class="w-3 h-3" style="background-color: {{ user.color }}">
+                </div> {{ user.color }}
+            </td>
+        </tr>
+
+    {% endfor %}
+    </table>
+{% endblock %}
