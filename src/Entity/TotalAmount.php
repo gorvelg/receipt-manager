@@ -20,8 +20,9 @@ class TotalAmount
     #[ORM\Column]
     private ?float $total = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $user = null;
+    #[ORM\ManyToOne(inversedBy: 'totalAmounts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -52,15 +53,16 @@ class TotalAmount
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(string $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
+
 }

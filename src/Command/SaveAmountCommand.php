@@ -62,6 +62,7 @@ class SaveAmountCommand extends Command
             );
         }
 
+
 // Calcul du total des montants pour chaque utilisateur
         $userAmount = $this->getUsersTotal();
 
@@ -105,7 +106,7 @@ class SaveAmountCommand extends Command
             );
 
             $userAmount[] = [
-                'user' => $user->getUsername(),
+                'user' => $user,
                 'totalAmount' => $totalAmount,
             ];
         }

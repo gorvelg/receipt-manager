@@ -34,10 +34,10 @@ class TotalAmountController extends AbstractController
         $homeId = $home->getId();
 
         $usersInHome = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
-        $usernames = array_map(fn($user) => $user->getUsername(), $usersInHome);
+        $userIds = array_map(fn($user) => $user->getId(), $usersInHome);
 
         $archives = $this->em->getRepository(TotalAmount::class)->findBy([
-            'user' => $usernames
+            'user' => $userIds
         ]);
 
         return $this->render('total_amount/index.html.twig', [

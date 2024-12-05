@@ -17,7 +17,7 @@
             {% set class = (loop.index0 // 2) is even ? 'bg-teal-2' : 'even' %}
             <tr class="{{ class }}">
                 <td class="px-2 py-1 truncate ">{{ archive.date|date('Y-m-d') }}</td>
-                <td class="px-2 py-1 truncate ">{{ archive.user }}</td>
+                <td class="px-2 py-1 truncate ">{{ archive.user.username }}</td>
                 <td class="px-2 py-1 truncate ">{{ archive.total }}</td>
             </tr>
         {% endfor %}
