@@ -23,7 +23,22 @@ class TotalAmountController extends AbstractController
     #[Route('/archive', name: 'app_archive')]
     public function index(): Response
     {
-        $archives = $this->em->getRepository(TotalAmount::class)->findAll();
+        $home = $this->getUser()->getHome();
+
+        if (empty($home)){
+            $this->addFlash('danger', 'L\'utilisateur n\'a pas de Home attribué.');
+            return $this->render('errors/error.html.twig', [
+            ]);
+        }
+
+        $homeId = $home->getId();
+
+        $usersInHome = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
+        $usernames = array_map(fn($user) => $user->getUsername(), $usersInHome);
+
+        $archives = $this->em->getRepository(TotalAmount::class)->findBy([
+            'user' => $usernames
+        ]);
 
         return $this->render('total_amount/index.html.twig', [
             'archives' => $archives,
