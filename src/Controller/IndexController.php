@@ -26,8 +26,17 @@ class IndexController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
-        $home = $this->getUser()->getHome()->getId();
-        $usersInHome = $this->em->getRepository(User::class)->findBy(['home' => $home]);
+        $home = $this->getUser()->getHome();
+
+        if (empty($home)){
+            $this->addFlash('danger', 'L\'utilisateur n\'a pas de Home attribué.');
+            return $this->render('errors/error.html.twig', [
+            ]);
+        }
+
+        $homeId = $home->getId();
+
+        $usersInHome = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
         $userIds = array_map(fn($user) => $user->getId(), $usersInHome);
 
         $tickets = $this->em->getRepository(Ticket::class)->findBy([
