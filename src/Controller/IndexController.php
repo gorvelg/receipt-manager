@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ticket;
+use App\Entity\User;
 use App\Service\TicketService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,13 @@ class IndexController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
-        $tickets = $this->em->getRepository(Ticket::class)->findAll();
+        $home = $this->getUser()->getHome()->getId();
+        $usersInHome = $this->em->getRepository(User::class)->findBy(['home' => $home]);
+        $userIds = array_map(fn($user) => $user->getId(), $usersInHome);
+
+        $tickets = $this->em->getRepository(Ticket::class)->findBy([
+            'user' => $userIds
+        ]);
         $total = $this->ticketService->subtractionOfTicketsAmount($this->getUser());
 //        dump($this->getUser()->getId());
 
