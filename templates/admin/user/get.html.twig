@@ -3,6 +3,9 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
+
+{% include('components/flash_message.html.twig') %}
+
     <h1 class="text-text-800 font-medium text-3xl mb-4">Liste des utilisateurs</h1>
     <table class="rounded-md py-2 pl-2 mb-4 w-full">
         <thead>
@@ -27,4 +30,12 @@
 
     {% endfor %}
     </table>
+    <div class="flex gap-2">
+        <a href="{{ path('app_register') }}">
+            {% include ('components/button.html.twig') with {text: 'Ajouter un utilisateur', type: 'primary'} %}
+        </a>
+        <a href="{{ path('create_home') }}">
+            {% include ('components/button.html.twig') with {text: 'Créer Home', type: 'primary'} %}
+        </a>
+    </div>
 {% endblock %}
