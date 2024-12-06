@@ -22,6 +22,10 @@ class TicketService
 
         $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
 
+        if (count($homeUsers) !== 2) {
+            return '';
+        }
+
         $userAmount = [];
         $totalConnectedUserTickets = $this->calculateTotalAmount($connectedUser->getTickets()->toArray());
 
