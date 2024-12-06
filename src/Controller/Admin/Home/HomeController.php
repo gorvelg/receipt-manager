@@ -17,7 +17,7 @@ class HomeController extends AbstractController
         $this->em = $em;
     }
 
-    #[Route('/admin/create-home', name: 'create_home')]
+    #[Route('/admin/create-home', name: 'app_create_home')]
     public function createHome(): Response
     {
 // Créer un nouvel objet Home
