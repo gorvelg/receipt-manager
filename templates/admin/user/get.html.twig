@@ -8,19 +8,18 @@
 
     <h1 class="text-text-800 font-medium text-3xl mb-4">Liste des utilisateurs</h1>
     <div class="rounded-md py-2 pl-2 mb-4 w-full">
-        <thead>
-            <tr>
-               <th>Email</th>
-               <th>Nom</th>
-               <th>Home ID</th>
-                <th>Couleur</th>
-            </tr>
-        </thead>
+
+            <div class="bg-primary-200 grid grid-cols-4 items-center text-text-800 font-medium">
+                <div class="px-2 py-1">Email</div>
+                <div class="px-2 py-1">Nom</div>
+                <div class="px-2 py-1">Home ID</div>
+                <div class="px-2 py-1">Couleur</div>
+         </div>
     {% for user in users %}
         {% set class = (loop.index0) is even ? 'bg-teal-2' : 'even' %}
+        
+        <div class="{{ class }} hover:bg-primary-300 cursor-pointer grid grid-cols-4 items-center relative ">
 
-             <a href="{{ path('app_admin_set_user', { id: user.id }) }}">
-                <div class="{{ class }} flex hover:bg-primary-300 ">
                     <div class="px-2 py-1 truncate ">{{ user.email }}</div>
                     <div class="px-2 py-1 truncate">{{ user.username }}</div>
                     <div class="px-2 py-1 truncate">{{ user.home.id }}</div>
@@ -28,11 +27,11 @@
                         <div class="w-3 h-3" style="background-color: {{ user.color }}">
                         </div> {{ user.color }}
                     </div>
-                </div>
-            </a>
-
+                    <a class="absolute w-full h-full z-10" href="{{ path('app_admin_set_user', { id: user.id }) }}"></a>
+        </div>
     {% endfor %}
-    </div>
+        </div>
+
     <div class="flex gap-2">
         <a href="{{ path('app_register') }}">
             {% include ('components/button.html.twig') with {text: 'Ajouter un utilisateur', type: 'primary'} %}
