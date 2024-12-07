@@ -7,7 +7,7 @@
 {% include('components/flash_message.html.twig') %}
 
     <h1 class="text-text-800 font-medium text-3xl mb-4">Liste des utilisateurs</h1>
-    <table class="rounded-md py-2 pl-2 mb-4 w-full">
+    <div class="rounded-md py-2 pl-2 mb-4 w-full">
         <thead>
             <tr>
                <th>Email</th>
@@ -18,18 +18,21 @@
         </thead>
     {% for user in users %}
         {% set class = (loop.index0) is even ? 'bg-teal-2' : 'even' %}
-        <tr class="{{ class }} hover:bg-primary-300 ">
-            <td class="px-2 py-1 truncate ">{{ user.email }}</td>
-            <td class="px-2 py-1 truncate">{{ user.username }}</td>
-            <td class="px-2 py-1 truncate">{{ user.home.id }}</td>
-            <td class="px-2 py-1 truncate flex gap-2 items-center uppercase">
-                <div class="w-3 h-3" style="background-color: {{ user.color }}">
-                </div> {{ user.color }}
-            </td>
-        </tr>
+
+             <a href="{{ path('app_admin_set_user', { id: user.id }) }}">
+                <div class="{{ class }} flex hover:bg-primary-300 ">
+                    <div class="px-2 py-1 truncate ">{{ user.email }}</div>
+                    <div class="px-2 py-1 truncate">{{ user.username }}</div>
+                    <div class="px-2 py-1 truncate">{{ user.home.id }}</div>
+                    <div class="px-2 py-1 truncate flex gap-2 items-center uppercase">
+                        <div class="w-3 h-3" style="background-color: {{ user.color }}">
+                        </div> {{ user.color }}
+                    </div>
+                </div>
+            </a>
 
     {% endfor %}
-    </table>
+    </div>
     <div class="flex gap-2">
         <a href="{{ path('app_register') }}">
             {% include ('components/button.html.twig') with {text: 'Ajouter un utilisateur', type: 'primary'} %}

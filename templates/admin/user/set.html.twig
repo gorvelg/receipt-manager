@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+
+    {% include('components/flash_message.html.twig') %}
+
+    <h1 class="text-text-800 font-medium text-3xl mb-4">Modifier un utilisateur</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+    {{ form_row(form.color) }}
+    {{ form_row(form.home) }}
+    <button type="submit" class="btn btn-primary">Modifier</button>
+    {{ form_end(form) }}
+
+{% endblock %}
