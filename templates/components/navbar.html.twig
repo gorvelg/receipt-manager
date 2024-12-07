@@ -6,6 +6,13 @@
             </li>
         </ul>
         <ul class="flex">
+            {% if is_granted('ROLE_ADMIN')  %}
+            <li class="flex items-center p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8">
+                <a href="{{ path('app_admin_get_user') }}">
+                    {% include ('@icons/admin.svg') %}
+                </a>
+            </li>
+            {% endif %}
             <li class=" p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8"><a href="{{ path('app_archive') }}">Historique</a></li>
             <li class=" flex items-center gap-2 p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8">
                 {% include ('@icons/logout.svg') %}
