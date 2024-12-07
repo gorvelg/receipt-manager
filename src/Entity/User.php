@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: TotalAmount::class, mappedBy: 'user')]
     private Collection $totalAmounts;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
 
 
 
@@ -226,6 +229,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $totalAmount->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }
