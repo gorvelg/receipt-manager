@@ -3,18 +3,35 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
-
+    {% set widgetClass = 'flex flex-col border-stone-200 px-3 py-2 border rounded-md w-full' %}
+    {% set labelClass = 'text-sm font-medium ' %}
     {% include('components/flash_message.html.twig') %}
 
-    <h1 class="text-text-800 font-medium text-3xl mb-4">Modifier un utilisateur</h1>
+<div class="flex justify-between items-center mb-4">
+    <a href="{{ path('app_admin_get_user') }}">
+        {% include('components/button.html.twig') with {icon: 'arrow-left', type: 'primary'} %}
+    </a>
+    <h1 class="text-text-800 font-medium text-3xl">Modifier un utilisateur</h1>
+</div>
+    {{ form_start(form, {'attr': {'class': 'flex flex-col gap-4'}}) }}
+    
+    {{ form_label(form.username, null, {'label_attr': {'class': labelClass }}) }}
+    {{ form_widget(form.username, {'attr': {'class': widgetClass}}) }}
 
-    {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.password) }}
-    {{ form_row(form.color) }}
-    {{ form_row(form.home) }}
-    <button type="submit" class="btn btn-primary">Modifier</button>
+    {{ form_label(form.email, null, {'label_attr': {'class': labelClass }}) }}
+    {{ form_widget(form.email, {'attr': {'class': widgetClass}}) }}
+
+    {{ form_label(form.color, null, {'label_attr': {'class': labelClass }}) }}
+    {{ form_widget(form.color, {'attr': {'class': widgetClass ~ ' h-12'}}) }}
+
+    {{ form_label(form.home, null, {'label_attr': {'class': labelClass }}) }}
+    {{ form_widget(form.home, {'attr': {'class': widgetClass}}) }}
+
+        <button class="ease-out duration-300 flex gap-1 items-center text-center justify-center px-3 py-2 border-2 rounded-3xl shadow-white/60 shadow-inner-lg bg-teal-600 hover:bg-teal-500 hover:border-teal-500 active:bg-teal-400 border-teal-600 text-white" type="submit">
+            Modifier
+        </button>
     {{ form_end(form) }}
 
 {% endblock %}
+
+
