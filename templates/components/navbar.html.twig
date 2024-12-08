@@ -1,15 +1,35 @@
 {% if app.user %}
     <nav class="flex justify-between shadow-sm bg-teal-9 mb-4 text-white">
         <ul>
-            <li class="p-4 border-b-[3px] border-sky-900">
-                <a href="{{ path('app_index') }}">Tickets</a>
+            <li class="flex items-center gap-2 p-4 border-b-[3px] border-teal-7">
+                {{ include('@icons/logo.svg') }}
+                <a href="{{ path('app_index') }}">myTickets</a>
             </li>
         </ul>
         <ul class="flex">
-            <li class=" p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8"><a href="{{ path('app_archive') }}">Historique</a></li>
+            {% if is_granted('ROLE_ADMIN')  %}
+            <li class="flex items-center p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8">
+                <a href="{{ path('app_admin_get_user') }}">
+                    {% include ('@icons/admin.svg') %}
+                </a>
+            </li>
+            {% endif %}
+            <li class=" flex items-center p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8">
+                <a class="hidden md:flex md:items-center md:gap-2" href="{{ path('app_archive') }}">
+                    {% include ('@icons/box-archive.svg') %}
+                    Historique</a>
+                <a class="md:hidden flex items-center" href="{{ path('app_archive') }}">
+                    {% include ('@icons/box-archive.svg') %}
+                </a>
+            </li>
+
             <li class=" flex items-center gap-2 p-4 border-b-[3px] border-teal-7 hover:bg-teal-10 hover:border-b-[3px] hover:border-teal-8">
+                <a class="hidden md:flex md:items-center md:gap-2" href="{{ path('app_logout') }}">
                 {% include ('@icons/logout.svg') %}
-                <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                Se déconnecter</a>
+                <a class="md:hidden flex items-center" href="{{ path('app_logout') }}">
+                    {% include ('@icons/logout.svg') %}
+                </a>
             </li>
         </ul>
     </nav>

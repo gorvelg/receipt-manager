@@ -46,6 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[ORM\OneToMany(targetEntity: TotalAmount::class, mappedBy: 'user')]
+    private Collection $totalAmounts;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
 
 
 
@@ -53,6 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+        $this->totalAmounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,7 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -192,6 +199,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TotalAmount>
+     */
+    public function getTotalAmounts(): Collection
+    {
+        return $this->totalAmounts;
+    }
+
+    public function addTotalAmount(TotalAmount $totalAmount): static
+    {
+        if (!$this->totalAmounts->contains($totalAmount)) {
+            $this->totalAmounts->add($totalAmount);
+            $totalAmount->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTotalAmount(TotalAmount $totalAmount): static
+    {
+        if ($this->totalAmounts->removeElement($totalAmount)) {
+            // set the owning side to null (unless already changed)
+            if ($totalAmount->getUser() === $this) {
+                $totalAmount->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }

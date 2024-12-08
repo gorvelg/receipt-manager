@@ -41,15 +41,24 @@ class SaveAmountCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $users = $this->em->getRepository(User::class)->findAll();
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $due = $this->ticketService->subtractionOfTicketsAmount($user);
             $home = $this->em->getRepository(Home::class)->find($user->getHome()->getId());
             $usersHome = $home->getUsers();
-            foreach ($usersHome as $userHome){
-                if ($userHome->getUsername() !== $user->getUsername()){
-                    $secondUser = ($userHome->getUsername());
+
+            $secondUser = null;
+
+            foreach ($usersHome as $userHome) {
+                if ($userHome->getUsername() !== $user->getUsername()) {
+                    $secondUser = $userHome->getUsername();
+                    break;
                 }
             }
+
+            if ($secondUser === null) {
+                continue;
+            }
+
             $this->mail->sendMail(
                 user: $user,
                 subject: 'Tickets : Récapitulatif du mois',
@@ -62,11 +71,10 @@ class SaveAmountCommand extends Command
             );
         }
 
-// Calcul du total des montants pour chaque utilisateur
+        // Calcul du total des montants pour chaque utilisateur
         $userAmount = $this->getUsersTotal();
 
-
-// Sauvegarde des montants totaux
+        // Sauvegarde des montants totaux
         foreach ($userAmount as $data) {
             $totalAmount = new TotalAmount();
             $totalAmount->setUser($data['user']);
@@ -77,16 +85,14 @@ class SaveAmountCommand extends Command
 
         $this->em->flush();
 
-// Envoi du mail
-
-
-// Suppression de tous les tickets
+        // Suppression de tous les tickets
         $this->removeAllTickets();
 
         $output->writeln('Les montants ont été sauvegardés et tous les tickets ont été supprimés.');
 
         return Command::SUCCESS;
     }
+
 
 // Récupérer le total des montants pour chaque utilisateur
     private function getUsersTotal(): array
@@ -105,7 +111,7 @@ class SaveAmountCommand extends Command
             );
 
             $userAmount[] = [
-                'user' => $user->getUsername(),
+                'user' => $user,
                 'totalAmount' => $totalAmount,
             ];
         }
