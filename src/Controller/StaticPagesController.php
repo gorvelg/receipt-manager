@@ -15,4 +15,12 @@ class StaticPagesController extends AbstractController
             'controller_name' => 'StaticPagesController',
         ]);
     }
+
+    #[Route('/help', name: 'app_help')]
+    public function help(): Response
+    {
+        return $this->render('static_pages/help.html.twig', [
+            'controller_name' => 'StaticPagesController',
+        ]);
+    }
 }
