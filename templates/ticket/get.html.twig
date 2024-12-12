@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TicketController!{% endblock %}
+{% block title %}Ticket du {{ ticket.createdAt | date("m/d/Y", "Europe/Paris") }}{% endblock %}
 
 {% block body %}
     <div class="flex justify-between items-center mb-4">

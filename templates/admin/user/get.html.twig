@@ -12,7 +12,7 @@
             <div class="bg-primary-200 grid grid-cols-4 items-center text-text-800 font-medium">
                 <div class="px-2 py-1">Email</div>
                 <div class="px-2 py-1">Nom</div>
-                <div class="px-2 py-1">Home ID</div>
+                <div class="px-2 py-1">Foyer ID</div>
                 <div class="px-2 py-1">Couleur</div>
          </div>
     {% for user in users %}
@@ -37,7 +37,10 @@
             {% include ('components/button.html.twig') with {text: 'Ajouter un utilisateur', type: 'primary'} %}
         </a>
         <a href="{{ path('app_create_home') }}">
-            {% include ('components/button.html.twig') with {text: 'Créer Home', type: 'primary'} %}
+            {% include ('components/button.html.twig') with {text: 'Créer Foyer', type: 'primary'} %}
+        </a>
+        <a href="{{ path('app_admin_get_home') }}">
+            {% include ('components/button.html.twig') with {text: 'Voir Foyers', type: 'primary'} %}
         </a>
     </div>
 {% endblock %}
