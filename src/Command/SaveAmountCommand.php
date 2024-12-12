@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'app:save-amount',
-    description: 'calculate and save total amount for each user'
+    description: 'Calculate and save total amount for each user if cronDay matches today.'
 )]
 class SaveAmountCommand extends Command
 {
@@ -26,82 +26,87 @@ class SaveAmountCommand extends Command
     public function __construct(EntityManagerInterface $em, MailService $mail, TicketService $ticketService)
     {
         $this->em = $em;
-
         parent::__construct();
         $this->mail = $mail;
         $this->ticketService = $ticketService;
     }
 
-
     protected function configure(): void
     {
-        $this->setDescription('Calcule et sauvegarde les montants totaux pour chaque utilisateur.');
+        $this->setDescription('Calcule et sauvegarde les montants totaux pour chaque utilisateur si cronDay correspond à aujourd\'hui.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $users = $this->em->getRepository(User::class)->findAll();
-        foreach ($users as $user) {
-            $due = $this->ticketService->subtractionOfTicketsAmount($user);
-            $home = $this->em->getRepository(Home::class)->find($user->getHome()->getId());
-            $usersHome = $home->getUsers();
+        $today = new \DateTimeImmutable();
 
-            $secondUser = null;
+        // Récupère toutes les `Home`
+        $homes = $this->em->getRepository(Home::class)->findAll();
+        if (!$homes) {
+            $output->writeln('Aucune home trouvée.');
+            return Command::FAILURE;
+        }
 
-            foreach ($usersHome as $userHome) {
-                if ($userHome->getUsername() !== $user->getUsername()) {
-                    $secondUser = $userHome->getUsername();
-                    break;
+        foreach ($homes as $home) {
+            $cronDay = $home->getCronDay();
+
+            // Vérifie si le cronDay correspond à aujourd'hui
+            if ($cronDay === (int)$today->format('d')) {
+                $usersHome = $home->getUsers();
+
+                if (count($usersHome) !== 2) {
+                    $output->writeln(sprintf('La Home ID %d ne contient pas exactement 2 utilisateurs.', $home->getId()));
+                    continue;
                 }
-            }
 
-            if ($secondUser === null) {
-                continue;
-            }
+                $users = $usersHome->toArray();
 
-            $this->mail->sendMail(
-                user: $user,
-                subject: 'Tickets : Récapitulatif du mois',
-                template: 'notification',
-                context: [
-                    'username' => $user->getUsername(),
-                    'secondUser' => $secondUser,
-                    'due' => $due
-                ]
-            );
+                // Calcul des montants dus et envoi des emails
+                foreach ($users as $currentUser) {
+                    $otherUser = $users[0] === $currentUser ? $users[1] : $users[0];
+                    $due = $this->ticketService->subtractionOfTicketsAmount($currentUser) - $this->ticketService->subtractionOfTicketsAmount($otherUser);
+
+                    $this->mail->sendMail(
+                        user: $currentUser,
+                        subject: 'Tickets : Récapitulatif du mois',
+                        template: 'notification',
+                        context: [
+                            'username' => $currentUser->getUsername(),
+                            'secondUser' => $otherUser->getUsername(),
+                            'due' => $due
+                        ]
+                    );
+                }
+
+                $output->writeln(sprintf('Emails envoyés pour la Home ID %d.', $home->getId()));
+
+                $userAmount = $this->getUserTotal($home);
+
+                // Sauvegarde des montants totaux
+                foreach ($userAmount as $data) {
+                    $totalAmount = new TotalAmount();
+                    $totalAmount->setUser($data['user']);
+                    $totalAmount->setTotal($data['totalAmount']);
+                    $totalAmount->setDate(new \DateTimeImmutable('now'));
+                    $this->em->persist($totalAmount);
+                }
+
+                $this->em->flush();
+
+                // Supprimer les tickets pour cette home
+                $this->removeTicketsForHome($home);
+            }
         }
 
-        // Calcul du total des montants pour chaque utilisateur
-        $userAmount = $this->getUsersTotal();
-
-        // Sauvegarde des montants totaux
-        foreach ($userAmount as $data) {
-            $totalAmount = new TotalAmount();
-            $totalAmount->setUser($data['user']);
-            $totalAmount->setTotal($data['totalAmount']);
-            $totalAmount->setDate(new \DateTimeImmutable('now'));
-            $this->em->persist($totalAmount);
-        }
-
-        $this->em->flush();
-
-        // Suppression de tous les tickets
-        $this->removeAllTickets();
-
-        $output->writeln('Les montants ont été sauvegardés et tous les tickets ont été supprimés.');
-
+        $output->writeln('Les montants ont été calculés et sauvegardés, et les tickets pertinents ont été supprimés.');
         return Command::SUCCESS;
     }
 
-
-// Récupérer le total des montants pour chaque utilisateur
-    private function getUsersTotal(): array
+    private function getUserTotal(Home $home): array
     {
-        $homeUsers = $this->em->getRepository(User::class)->findAll();
 
         $userAmount = [];
-
-        foreach ($homeUsers as $user) {
+        foreach ($home->getUsers() as $user) {
             $tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
 // Calcule et retourne le montant total des tickets pour un utilisateur
             $totalAmount = array_reduce(
@@ -117,13 +122,13 @@ class SaveAmountCommand extends Command
         }
         return $userAmount;
     }
-
-// Supprimer tous les tickets
-    private function removeAllTickets(): void
+    private function removeTicketsForHome(Home $home): void
     {
-        $tickets = $this->em->getRepository(Ticket::class)->findAll();
-        foreach ($tickets as $ticket) {
-            $this->em->remove($ticket);
+        foreach ($home->getUsers() as $user) {
+            $tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
+            foreach ($tickets as $ticket) {
+                $this->em->remove($ticket);
+            }
         }
         $this->em->flush();
     }

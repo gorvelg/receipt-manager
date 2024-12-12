@@ -18,6 +18,9 @@ class Home
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'home')]
     private Collection $users;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $cronDay = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -54,6 +57,18 @@ class Home
                 $user->setHome(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCronDay(): ?int
+    {
+        return $this->cronDay;
+    }
+
+    public function setCronDay(?int $cronDay): static
+    {
+        $this->cronDay = $cronDay;
 
         return $this;
     }
