@@ -1,47 +1,78 @@
-const deleteAction = (elements, callback) => {
-    elements.forEach(button => {
-        button.addEventListener('click', () => {
-            callback(button);
+document.addEventListener('DOMContentLoaded', () => {
+    const ticketItems = document.querySelectorAll('.tag');
+
+    ticketItems.forEach(item => {
+        let startX;
+        const content = item.querySelector('.delete-slide');
+        const deleteButton = item.querySelector('.delete-button');
+
+        // Détecter le début du glissement
+        content.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        // Détecter le mouvement du doigt
+        content.addEventListener('touchmove', (e) => {
+            const moveX = e.touches[0].clientX;
+            const diff = moveX - startX;
+
+            if (diff < -50) { // Glissement vers la gauche
+                item.classList.add('swiped');
+                deleteButton.style.transform = 'translateX(0)';
+            } else if (diff > 50) { // Glissement vers la droite
+                item.classList.remove('swiped');
+                deleteButton.style.transform = 'translateX(100%)';
+            }
+        });
+
+        // Suppression après clic sur le bouton
+        deleteButton.addEventListener('click', () => {
+            const ticketId = deleteButton.dataset.ticketId;
+
+            fetch(`/ticket/${ticketId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Supprime visuellement le ticket
+                        item.remove();
+                        updateTotal();
+                    } else {
+                        console.error('Erreur lors de la suppression du ticket.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur réseau lors de la suppression du ticket :', error);
+                });
         });
     });
-}
 
-deleteAction(document.querySelectorAll('.delete'), (button) => {
-    console.log('Button clicked:', button.dataset.ticketId);
-    fetch('/ticket/' + button.dataset.ticketId, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': 'your-csrf-token', // Si vous utilisez un token CSRF
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            console.log('Delete response status:', response.status);
-            if (response.ok) {
-                console.log('Ticket successfully deleted');
-                // Supprimer la ligne du ticket
-                document.getElementById('ticket-' + button.dataset.ticketId).remove();
+    const showDeleteButtons = document.getElementById('show-delete');
 
-                // Mettre à jour le total en AJAX
-                fetch('/update-total', {
-                    method: 'PATCH',
-                })
-                    .then(response => response.text())
-                    .then(total => {
-                        // Mettez à jour l'affichage du total sur la page
-                        document.getElementById('total').innerText = total + ' €';
-                        console.log('Nouveau total :', total);
-                    })
-                    .catch(error => {
-                        console.error('Il y a eu un problème avec l\'opération fetch :', error);
-                    });
-            } else {
-                response.json().then(data => {
-                    console.error('Erreur lors de la suppression du ticket:', data.error);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Il y a eu un problème avec l\'opération fetch pour supprimer le ticket :', error);
+// Afficher ou masquer les boutons de suppression
+    showDeleteButtons.addEventListener('click', () => {
+        ticketItems.forEach(item => {
+            const deleteButton = item.querySelector('.delete-button');
+            // Basculer la classe "swiped"
+            const isSwiped = item.classList.toggle('swiped');
+            // Appliquer le style en fonction de l'état
+            deleteButton.style.transform = isSwiped ? 'translateX(0)' : 'translateX(100%)';
         });
+    });
+
+
+    // Fonction pour mettre à jour le total après suppression
+    function updateTotal() {
+        fetch('/update-total', { method: 'PATCH' })
+            .then(response => response.text())
+            .then(total => {
+                document.getElementById('total').innerText = `${total} €`;
+            })
+            .catch(error => {
+                console.error('Erreur réseau lors de la mise à jour du total :', error);
+            });
+    }
 });

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Service\TicketService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,8 +25,9 @@ class IndexController extends AbstractController
 
 
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(ParameterBagInterface $parameterBag): Response
     {
+        $storeLogos = $parameterBag->get('store_logos');
         $home = $this->getUser()->getHome();
 
         if (empty($home)){
@@ -50,6 +52,7 @@ class IndexController extends AbstractController
 
             'tickets' => $tickets,
             'total' => $total,
+            'storeLogos' => $storeLogos,
 
         ]);
     }

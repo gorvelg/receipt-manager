@@ -3,8 +3,10 @@
 namespace App\Controller\Admin\Home;
 
 use App\Entity\Home;
+use App\Form\HomeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,5 +34,33 @@ class HomeController extends AbstractController
 
 // Redirige vers une page de succès ou la page d'accueil
         return $this->redirectToRoute('app_admin_get_user');
+    }
+
+    #[Route('/admin/get/home', name: 'app_admin_get_home')]
+    public function getHome(): Response
+    {
+        $homes = $this->em->getRepository(Home::class)->findAll();
+
+        return $this->render('admin/home/index.html.twig', [
+            'homes' => $homes,
+        ]);
+    }
+    #[Route('/admin/set/home/{home}', name: 'app_admin_set_home')]
+    public function setHome(Request $request, Home $home): Response
+    {
+
+        $form = $this->createForm(HomeType::class, $home);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($home);
+            $this->em->flush();
+            $this->addFlash('success', 'Foyer mis à jour avec succès!');
+            return $this->redirectToRoute('app_admin_get_home');
+        }
+
+        return $this->render('admin/home/set.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

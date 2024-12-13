@@ -67,19 +67,21 @@ class TicketController extends AbstractController
             'isCreated' => $isCreated
         ]);
     }
-    #[Route('/ticket/{id}', name: 'app_delete_ticket', methods: ['DELETE'])]
-    public function deleteTicket(Ticket $ticket): JsonResponse
+    #[Route('/ticket/{id}', name: 'app_ticket_delete', methods: ['DELETE'])]
+    public function deleteTicket(int $id): JsonResponse
     {
-        try {
-            $this->em->remove($ticket);
-            $this->em->flush();
-            return new JsonResponse(['status' => 'Ticket deleted'], Response::HTTP_NO_CONTENT);
-        } catch (\Exception $e) {
-            // Log the error message
-            $this->logger->error('Error deleting ticket: ' . $e->getMessage());
-            return new JsonResponse(['error' => 'Internal Server Error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        $ticket = $this->em->getRepository(Ticket::class)->find($id);
+
+        if (!$ticket) {
+            return new JsonResponse(['error' => 'Ticket introuvable'], Response::HTTP_NOT_FOUND);
         }
+
+        $this->em->remove($ticket);
+        $this->em->flush();
+
+        return new JsonResponse(['success' => 'Ticket supprimé'], Response::HTTP_OK);
     }
+
 
     #[Route('/ticket/{ticket}', name: 'app_get_ticket', methods: ['GET'])]
     public function getTicket(Ticket $ticket): Response
