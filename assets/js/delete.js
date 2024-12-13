@@ -50,6 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const showDeleteButtons = document.getElementById('show-delete');
+
+// Afficher ou masquer les boutons de suppression
+    showDeleteButtons.addEventListener('click', () => {
+        ticketItems.forEach(item => {
+            const deleteButton = item.querySelector('.delete-button');
+            // Basculer la classe "swiped"
+            const isSwiped = item.classList.toggle('swiped');
+            // Appliquer le style en fonction de l'état
+            deleteButton.style.transform = isSwiped ? 'translateX(0)' : 'translateX(100%)';
+        });
+    });
+
+
     // Fonction pour mettre à jour le total après suppression
     function updateTotal() {
         fetch('/update-total', { method: 'PATCH' })

@@ -31,14 +31,14 @@
         <div class="w-full text-gray-800">
             {% for ticket in tickets|sort((a, b) => b.createdAt <=> a.createdAt) %}
                 <div class="tag relative flex items-center overflow-hidden bg-white hover:bg-gray-50 shadow-md rounded-md mb-4">
-                    <div class="grid grid-cols-4 px-4 py-2 justify-between items-center grow">
+                    <div class="grid grid-cols-3 sm:grid-cols-5 px-4 py-2 justify-between items-center grow">
                         <div class="flex gap-2 items-center pr-2 py-1 truncate">
                             <span class="user-tag before:block before:content-[''] before:w-[3px] before:h-10" style="background-color: {{ ticket.user.color }};"></span>
                             <div>{{ ticket.title }}</div>
                         </div>
                         <div class="px-2 py-1 truncate">{{ ticket.amount }} €</div>
                         <div class="px-2 py-1 truncate">{{ ticket.createdAt|date('d/m/Y') }}</div>
-                        <div class="px-2 py-1 truncate">{{ ticket.user.username }}</div>
+                        <div class="hidden sm:block px-2 py-1 truncate">{{ ticket.user.username }}</div>
                     </div>
                     <button class="absolute right-0 top-0 bottom-0 bg-red-500 text-white px-4 py-2 transform translate-x-full transition-transform duration-300 ease-in-out delete-button" data-ticket-id="{{ ticket.id }}">
                         Supprimer
