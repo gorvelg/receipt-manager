@@ -1,25 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const ticketItems = document.querySelectorAll('.ticket-item');
+    const ticketItems = document.querySelectorAll('.tag');
 
-    ticketItems.forEach(ticket => {
+    ticketItems.forEach(item => {
         let startX;
-        const content = ticket.querySelector('.ticket-content');
-        const deleteButton = ticket.querySelector('.delete-button');
+        const content = item.querySelector('.delete-slide');
+        const deleteButton = item.querySelector('.delete-button');
 
         // Détecter le début du glissement
         content.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
         });
 
-        // Détecter le mouvement
+        // Détecter le mouvement du doigt
         content.addEventListener('touchmove', (e) => {
             const moveX = e.touches[0].clientX;
             const diff = moveX - startX;
 
             if (diff < -50) { // Glissement vers la gauche
-                ticket.classList.add('swiped');
+                item.classList.add('swiped');
+                deleteButton.style.transform = 'translateX(0)';
             } else if (diff > 50) { // Glissement vers la droite
-                ticket.classList.remove('swiped');
+                item.classList.remove('swiped');
+                deleteButton.style.transform = 'translateX(100%)';
             }
         });
 
@@ -35,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
             })
                 .then(response => {
                     if (response.ok) {
-                        ticket.remove();
+                        // Supprime visuellement le ticket
+                        item.remove();
                         updateTotal();
                     } else {
                         console.error('Erreur lors de la suppression du ticket.');
@@ -47,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mettre à jour le total après suppression
+    // Fonction pour mettre à jour le total après suppression
     function updateTotal() {
         fetch('/update-total', { method: 'PATCH' })
             .then(response => response.text())
