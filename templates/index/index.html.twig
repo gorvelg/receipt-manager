@@ -45,7 +45,7 @@
                         <div class="px-2 py-1 truncate">{{ ticket.createdAt|date('d/m/Y') }}</div>
                         <div class="hidden sm:block px-2 py-1 truncate">{{ ticket.user.username }}</div>
                     </div>
-                    <button class="absolute right-0 top-0 bottom-0 bg-red-500 text-white px-4 py-2 transform translate-x-full transition-transform duration-300 ease-in-out delete-button" data-ticket-id="{{ ticket.id }}">
+                    <button class="absolute z-20 right-0 top-0 bottom-0 bg-red-500 text-white px-4 py-2 transform translate-x-full transition-transform duration-300 ease-in-out delete-button" data-ticket-id="{{ ticket.id }}">
                         Supprimer
                     </button>
                     <a class="delete-slide absolute w-full h-full z-10" href="{{ path('app_get_ticket', {'ticket': ticket.id}) }}"></a>
