@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     pictures_directory: '%kernel.project_dir%/public/uploads/pictures'
+    store_logos:
+        "leclerc": "images/store_logos/leclerc.png"
+        "carrefour": "images/store_logos/carrefour.png"
 services:
     # default configuration for services in *this* file
     _defaults:
