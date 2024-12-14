@@ -38,7 +38,7 @@ class TicketController extends AbstractController
         }
 
         $user = $this->getUser();
-        if ($ticket->getUser() !== $user) {
+        if ($ticket->getUser() !== $user && $ticket->getUser()->getHome() !== $user->getHome()) {
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce ticket.');
         }
 
@@ -93,7 +93,7 @@ class TicketController extends AbstractController
     public function getTicket(Ticket $ticket): Response
     {
         $user = $this->getUser();
-        if ($ticket->getUser() !== $user) {
+        if ($ticket->getUser() !== $user && $ticket->getUser()->getHome() !== $user->getHome()) {
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce ticket.');
         }
 
