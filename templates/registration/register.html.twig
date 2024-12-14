@@ -5,7 +5,7 @@
 {% block body %}
     <h1 class="text-text-800 font-medium text-3xl mb-4">Inscription</h1>
 
-    {{ form_errors(registrationForm) }}
+
 
     {{ form_start(registrationForm, {'attr': {'class': 'flex flex-col gap-2'}}) }}
     <div class="flex flex-col">
@@ -13,10 +13,16 @@
             'label_attr': { 'class': "after:content-['*'] after:text-red-500" },
             'label': 'Prénom'
         }) }}
-        {{ form_widget(registrationForm.username,{
+        {{ form_widget(registrationForm.username, {
             'attr': {'class': 'border-stone-200 px-3 py-2 border rounded-md'}
         }) }}
+        {% if form_errors(registrationForm.username) %}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(registrationForm.username) }}
+            </div>
+        {% endif %}
     </div>
+
     <div class="flex flex-col">
         {{ form_label(registrationForm.email, null, {
             'label_attr': { 'class': "after:content-['*'] after:text-red-500" },
@@ -25,7 +31,13 @@
         {{ form_widget(registrationForm.email, {
             'attr': { 'class': 'border-stone-200 px-3 py-2 border rounded-md'}
         }) }}
+        {% if form_errors(registrationForm.email) %}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(registrationForm.email) }}
+            </div>
+        {% endif %}
     </div>
+
     <div class="flex flex-col">
         {{ form_label(registrationForm.plainPassword, null, {
             'label_attr': { 'class': "after:content-['*'] after:text-red-500" },
@@ -34,6 +46,11 @@
         {{ form_widget(registrationForm.plainPassword, {
             'attr': {'class': 'border-stone-200 px-3 py-2 border rounded-md'}
         }) }}
+        {% if form_errors(registrationForm.plainPassword) %}
+            <div class="text-red-600 text-sm mt-1">
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+        {% endif %}
     </div>
 
 
