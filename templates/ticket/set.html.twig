@@ -5,6 +5,7 @@
 {% block body %}
     {% set widgetClass = 'flex flex-col border-stone-200 px-3 py-2 border rounded-md w-full' %}
     {% set labelClass = 'text-sm font-medium ' %}
+    {% set dangerAlert = 'flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800' %}
     {% set required = 'after:content-["*"] after:text-red-500' %}
 
     <div class="flex justify-between items-center mb-4">
@@ -22,12 +23,17 @@
 {{ form_start(form, {'attr': {'class': 'flex flex-col gap-4'}}) }}
     {{ form_label(form.title, null, {'label_attr': {'class': labelClass ~ required}}) }}
     {{ form_widget(form.title, {'attr': {'class': widgetClass}}) }}
+    {{ form_errors(form.title, {'attr': {'class': dangerAlert}}) }}
 
     {{ form_label(form.amount, null, {'label_attr': {'class': labelClass ~ required}}) }}
     {{ form_widget(form.amount, {'attr': {'class': widgetClass}}) }}
+    {{ form_errors(form.amount, {'attr': {'class': dangerAlert}}) }}
+
 
     {{ form_label(form.photo, null, {'label_attr': {'class': labelClass}}) }}
     {{ form_widget(form.photo, {'attr': {'class': widgetClass}}) }}
+    {{ form_errors(form.photo, {'attr': {'class': dangerAlert}}) }}
+
 
     {{ form_label(form.created_at, null, {'label_attr': {'class': labelClass ~ required}}) }}
     {{ form_widget(form.created_at, {'attr': {'class': widgetClass}}) }}
