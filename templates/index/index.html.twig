@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1 class="text-gray-800 font-medium text-3xl mb-4">Bonjour <span class="capitalize">{{ app.user.username }}</span> ! 👋</h1>
-    <a href="{{ path('app_ticket') }}" class="fixed bottom-0 right-0 m-4">
+    <a href="{{ path('app_ticket') }}" class="fixed z-50 bottom-0 right-0 m-4">
         {% include ('components/button.html.twig') with {text: 'Ajouter un ticket', type: 'primary'} %}
     </a>
     <div class="rounded-md mb-4 p-4
