@@ -36,6 +36,12 @@ class TicketController extends AbstractController
             $ticket->setUser($this->getUser());
             $isCreated = false;
         }
+
+        $user = $this->getUser();
+        if ($ticket->getUser() !== $user && $ticket->getUser()->getHome() !== $user->getHome()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce ticket.');
+        }
+
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
@@ -86,6 +92,11 @@ class TicketController extends AbstractController
     #[Route('/ticket/{ticket}', name: 'app_get_ticket', methods: ['GET'])]
     public function getTicket(Ticket $ticket): Response
     {
+        $user = $this->getUser();
+        if ($ticket->getUser() !== $user && $ticket->getUser()->getHome() !== $user->getHome()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce ticket.');
+        }
+
         return $this->render('ticket/get.html.twig', [
             'ticket' => $ticket,
         ]);

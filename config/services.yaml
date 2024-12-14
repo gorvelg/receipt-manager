@@ -8,6 +8,22 @@ parameters:
     store_logos:
         "leclerc": "images/store_logos/leclerc.png"
         "carrefour": "images/store_logos/carrefour.png"
+        "auchan": "images/store_logos/auchan.png"
+        "intermarche": "images/store_logos/intermarche.png"
+        "casino": "images/store_logos/casino.png"
+        "aldi": "images/store_logos/aldi.png"
+        "lidl": "images/store_logos/lidl.png"
+        "super u": "images/store_logos/super_u.png"
+        "colruyt": "images/store_logos/colruyt.png"
+        "monoprix": "images/store_logos/monoprix.png"
+        "decathlon": "images/store_logos/decathlon.png"
+        "marie blachere": "images/store_logos/marie_blachere.png"
+        "ange": "images/store_logos/ange.png"
+        "brico depot": "images/store_logos/brico_depot.png"
+        "picard": "images/store_logos/picard.png"
+        "fnac": "images/store_logos/fnac.png"
+        "action": "images/store_logos/action.png"
+
 services:
     # default configuration for services in *this* file
     _defaults:

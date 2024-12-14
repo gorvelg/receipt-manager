@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket
@@ -13,12 +14,32 @@ class Ticket
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Ce champ est obligatoire')]
+    #[Assert\Length(
+        min: 1,
+        max: 255,
+        minMessage: 'Le nom doit contenir au moins 1 caractère',
+        maxMessage: 'Le nom ne peut pas dépasser 255 caractères'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Assert\NotBlank(message: 'Ce champ est obligatoire')]
+    #[Assert\Positive(message: 'Le montant doit être positif')]
+    #[Assert\Type(type: 'float', message: 'Le montant doit être un nombre')]
+    #[Assert\Range(
+        notInRangeMessage: 'Le montant doit être compris entre {{ min }} et {{ max }}',
+        min: 0.01,
+        max: 1000000
+    )]
     #[ORM\Column]
     private ?float $amount = null;
 
+    #[Assert\File(
+        maxSize: '5M',
+        mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+        mimeTypesMessage: 'Seules les images JPEG, PNG ou WEBP sont autorisées'
+    )]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
