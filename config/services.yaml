@@ -24,6 +24,8 @@ parameters:
         "picard": "images/store_logos/picard.png"
         "fnac": "images/store_logos/fnac.png"
         "action": "images/store_logos/action.png"
+        "edf": "images/store_logos/edf.png"
+        "orange": "images/store_logos/orange.png"
 
 services:
     # default configuration for services in *this* file

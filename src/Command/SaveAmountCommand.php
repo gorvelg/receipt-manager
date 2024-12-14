@@ -40,7 +40,7 @@ class SaveAmountCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $today = new \DateTimeImmutable();
+        $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
 
         // Récupère toutes les `Home`
         $homes = $this->em->getRepository(Home::class)->findAll();
