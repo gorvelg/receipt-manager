@@ -36,7 +36,7 @@
                             <span class="user-tag before:block before:content-[''] before:w-[3px] before:h-10" style="background-color: {{ ticket.user.color }};"></span>
                             {% set logo = storeLogos[ticket.title|lower] ?? null %}
                             {% if logo %}
-                                <img src="{{ asset(logo|replace({'%kernel.project_dir%/': ''})) }}" alt="{{ ticket.title }}" class="h-10 w-10 object-contain">
+                                <img src="{{ asset(logo|replace({'%kernel.project_dir%/': ''})) }}" alt="{{ ticket.title }}" class="h-8 w-8 object-contain">
                             {% else %}
                                 <div>{{ ticket.title|capitalize }}</div>
                             {% endif %}

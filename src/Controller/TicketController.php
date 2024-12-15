@@ -42,6 +42,13 @@ class TicketController extends AbstractController
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce ticket.');
         }
 
+        $oldPictureName = $ticket->getPhoto();
+
+
+
+
+
+
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
@@ -50,11 +57,20 @@ class TicketController extends AbstractController
             $pictureFile = $form->get('photo')->getData();
 
             if ($pictureFile) {
+                if ($oldPictureName) {
+                    $oldPicturePath = $this->getParameter('pictures_directory') . DIRECTORY_SEPARATOR . $oldPictureName;
+                    if (file_exists($oldPicturePath)) {
+                        unlink($oldPicturePath);
+                    }
+                }
+
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $pictureFile->guessExtension();
 
                 try {
+
+
                     $pictureFile->move(
                         $this->getParameter('pictures_directory'),
                         $newFilename
