@@ -22,7 +22,8 @@ class MailService
         User $user,
         string $subject,
         string $template,
-        array $context
+        array $context,
+        ?array $attachment = null
 
     ): void
     {
@@ -34,6 +35,9 @@ class MailService
             ->subject($subject)
             ->htmlTemplate('emails/' . $template . '.html.twig')
             ->context($context);
+        if ($attachment && file_exists($attachment['path'])) {
+            $email->attachFromPath($attachment['path'], $attachment['name']);
+        }
 
         $this->mailer->send($email);
     }
