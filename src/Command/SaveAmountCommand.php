@@ -63,6 +63,9 @@ class SaveAmountCommand extends Command
 
                 $users = $usersHome->toArray();
 
+                $pdfPath = $this->ticketService->generatePdfForHome($home);
+
+
                 // Calcul des montants dus et envoi des emails
                 foreach ($users as $currentUser) {
                     $otherUser = $users[0] === $currentUser ? $users[1] : $users[0];
@@ -76,7 +79,8 @@ class SaveAmountCommand extends Command
                             'username' => $currentUser->getUsername(),
                             'secondUser' => $otherUser->getUsername(),
                             'due' => $due
-                        ]
+                        ],
+                        attachment: $pdfPath ? ['path' => $pdfPath, 'name' => 'Tickets_' . date('Y-m') . '.pdf'] : null
                     );
                 }
 
