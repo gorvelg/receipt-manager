@@ -140,12 +140,12 @@ class TicketService
         // Construction du contenu HTML du PDF
         $html = '<h1>Tickets de caisse</h1>';
         $html .= '<table border="1" cellpadding="5" cellspacing="0" style="width:100%;">';
-        $html .= '<tr><th>ID</th><th>Date</th><th>Montant</th><th>Utilisateur</th></tr>';
+        $html .= '<tr><th>Nom</th><th>Date</th><th>Montant</th><th>Utilisateur</th></tr>';
 
         foreach ($tickets as $ticket) {
             $html .= sprintf(
                 '<tr><td>%s</td><td>%s</td><td>%s €</td><td>%s</td></tr>',
-                $ticket->getId(),
+                $ticket->getTitle(),
                 $ticket->getCreatedAt()->format('Y-m-d H:i:s'),
                 number_format($ticket->getAmount(), 2, ',', ' '),
                 $ticket->getUser()->getUsername()
