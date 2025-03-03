@@ -69,7 +69,11 @@ class SaveAmountCommand extends Command
                 // Calcul des montants dus et envoi des emails
                 foreach ($users as $currentUser) {
                     $otherUser = $users[0] === $currentUser ? $users[1] : $users[0];
-                    $due = $this->ticketService->subtractionOfTicketsAmount($currentUser) - $this->ticketService->subtractionOfTicketsAmount($otherUser);
+                    $due =
+                        (
+                            $this->ticketService->subtractionOfTicketsAmount($currentUser)
+                            - $this->ticketService->subtractionOfTicketsAmount($otherUser)
+                        ) / 2;
 
                     $this->mail->sendMail(
                         user: $currentUser,
