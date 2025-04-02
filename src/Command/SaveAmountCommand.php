@@ -29,7 +29,7 @@ class SaveAmountCommand extends Command
         EntityManagerInterface $em,
         MailService $mail,
         TicketService $ticketService,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
     ) {
         parent::__construct();
         $this->em = $em;
@@ -46,6 +46,7 @@ class SaveAmountCommand extends Command
         $homes = $this->em->getRepository(Home::class)->findAll();
         if (!$homes) {
             $output->writeln('<error>Aucune home trouvée.</error>');
+
             return Command::FAILURE;
         }
 
@@ -53,10 +54,10 @@ class SaveAmountCommand extends Command
             $cronDay = $home->getCronDay();
 
             // Vérifie si le cronDay correspond à aujourd'hui
-            if ($cronDay === (int)$today->format('d')) {
+            if ($cronDay === (int) $today->format('d')) {
                 $usersHome = $home->getUsers();
 
-                if (count($usersHome) !== 2) {
+                if (2 !== count($usersHome)) {
                     $output->writeln(sprintf('<comment>La Home ID %d ne contient pas exactement 2 utilisateurs.</comment>', $home->getId()));
                     continue;
                 }
@@ -65,15 +66,14 @@ class SaveAmountCommand extends Command
 
                 $pdfPath = $this->ticketService->generatePdfForHome($home);
 
-
                 // Calcul des montants dus et envoi des emails
                 foreach ($users as $currentUser) {
                     $otherUser = $users[0] === $currentUser ? $users[1] : $users[0];
-                    $due =
-                        (
-                            $this->ticketService->subtractionOfTicketsAmount($currentUser)
-                            - $this->ticketService->subtractionOfTicketsAmount($otherUser)
+                    $due = (
+                            (float) $this->ticketService->subtractionOfTicketsAmount($currentUser)
+                            - (float) $this->ticketService->subtractionOfTicketsAmount($otherUser)
                         ) / 2;
+
 
                     $this->mail->sendMail(
                         user: $currentUser,
@@ -82,9 +82,9 @@ class SaveAmountCommand extends Command
                         context: [
                             'username' => $currentUser->getUsername(),
                             'secondUser' => $otherUser->getUsername(),
-                            'due' => $due
+                            'due' => $due,
                         ],
-                        attachment: $pdfPath ? ['path' => $pdfPath, 'name' => 'Tickets_' . date('Y-m') . '.pdf'] : null
+                        attachment: $pdfPath ? ['path' => $pdfPath, 'name' => 'Tickets_'.date('Y-m').'.pdf'] : null
                     );
                 }
 
@@ -110,6 +110,7 @@ class SaveAmountCommand extends Command
         }
 
         $output->writeln('<info>Les montants ont été calculés et sauvegardés, et les tickets pertinents ont été supprimés.</info>');
+
         return Command::SUCCESS;
     }
 
@@ -120,7 +121,7 @@ class SaveAmountCommand extends Command
             $tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
             $totalAmount = array_reduce(
                 $tickets,
-                fn($sum, $ticket) => $sum + $ticket->getAmount(),
+                fn ($sum, $ticket) => $sum + $ticket->getAmount(),
                 0
             );
 
@@ -129,6 +130,7 @@ class SaveAmountCommand extends Command
                 'totalAmount' => $totalAmount,
             ];
         }
+
         return $userAmount;
     }
 
@@ -141,7 +143,7 @@ class SaveAmountCommand extends Command
             foreach ($tickets as $ticket) {
                 $pictureName = $ticket->getPhoto();
                 if ($pictureName) {
-                    $path = $picturesDirectory . DIRECTORY_SEPARATOR . $pictureName;
+                    $path = $picturesDirectory.DIRECTORY_SEPARATOR.$pictureName;
                     if (file_exists($path)) {
                         unlink($path);
                     }

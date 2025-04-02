@@ -4,19 +4,16 @@ namespace App\Form;
 
 use App\Entity\Ticket;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\EntityRepository;
 
 class TicketType extends AbstractType
 {
@@ -29,8 +26,14 @@ class TicketType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $connectedUser = $this->security->getUser();  // Récupère l'utilisateur connecté
-        $homeId = $connectedUser->getHome() ? $connectedUser->getHome()->getId() : null;  // Récupère l'ID de la maison de l'utilisateur connecté
+        $connectedUser = $this->security->getUser();
+
+        if (!$connectedUser instanceof User) {
+            throw new \LogicException('L\'utilisateur connecté n\'est pas valide.');
+        }
+
+        $homeId = $connectedUser->getHome() ? $connectedUser->getHome()->getId() : null;
+
 
         $builder
             ->add('title', TextType::class, [
@@ -42,7 +45,7 @@ class TicketType extends AbstractType
             ->add('photo', FileType::class, [
                 'data_class' => null,
                 'label' => 'Photo',
-                'required' => false
+                'required' => false,
             ])
             ->add('created_at', DateTimeType::class, [
                 'label' => 'Date du ticket',

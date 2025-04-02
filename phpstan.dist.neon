@@ -1,0 +1,18 @@
+parameters:
+    level: 7
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+    ignoreErrors:
+        -
+            identifier: property.unusedType
+        -
+            identifier : missingType.generics
+        -
+            identifier: missingType.iterableValue
+        -
+            identifier: generics.notGeneric
+    excludePaths:
+        - src/Entity/

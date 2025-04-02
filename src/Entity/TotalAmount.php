@@ -64,5 +64,4 @@ class TotalAmount
 
         return $this;
     }
-
 }

@@ -22,17 +22,17 @@ class HomeController extends AbstractController
     #[Route('/admin/create-home', name: 'app_create_home')]
     public function createHome(): Response
     {
-// Créer un nouvel objet Home
+        // Créer un nouvel objet Home
         $home = new Home();
 
-// Enregistrer dans la base de données
+        // Enregistrer dans la base de données
         $this->em->persist($home);
         $this->em->flush();
 
-// Afficher un message de succès et rediriger vers une autre page
+        // Afficher un message de succès et rediriger vers une autre page
         $this->addFlash('success', 'Home créé avec succès!');
 
-// Redirige vers une page de succès ou la page d'accueil
+        // Redirige vers une page de succès ou la page d'accueil
         return $this->redirectToRoute('app_admin_get_user');
     }
 
@@ -45,10 +45,10 @@ class HomeController extends AbstractController
             'homes' => $homes,
         ]);
     }
+
     #[Route('/admin/set/home/{home}', name: 'app_admin_set_home')]
     public function setHome(Request $request, Home $home): Response
     {
-
         $form = $this->createForm(HomeType::class, $home);
         $form->handleRequest($request);
 
@@ -56,6 +56,7 @@ class HomeController extends AbstractController
             $this->em->persist($home);
             $this->em->flush();
             $this->addFlash('success', 'Foyer mis à jour avec succès!');
+
             return $this->redirectToRoute('app_admin_get_home');
         }
 

@@ -5,9 +5,9 @@ namespace App\Service;
 use App\Entity\Home;
 use App\Entity\Ticket;
 use App\Entity\User;
-use App\Repository\HomeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
+use Dompdf\Exception;
 use Dompdf\Options;
 
 class TicketService
@@ -19,13 +19,13 @@ class TicketService
         $this->em = $em;
     }
 
-    public function subtractionOfTicketsAmount(User $connectedUser): string
+    public function subtractionOfTicketsAmount(User $connectedUser): string | float
     {
         $homeId = $connectedUser->getHome();
 
         $homeUsers = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
 
-        if (count($homeUsers) !== 2) {
+        if (2 !== count($homeUsers)) {
             return '';
         }
 
@@ -37,14 +37,13 @@ class TicketService
         }
 
         if ($totalConnectedUserTickets === $userAmount[0]) {
-        $subtractionResult = ($userAmount[0] - $userAmount[1]) / 2;
+            $subtractionResult = ($userAmount[0] - $userAmount[1]) / 2;
         } else {
             $subtractionResult = ($userAmount[1] - $userAmount[0]) / 2;
         }
 
         return $subtractionResult;
     }
-
 
     private function getUserTickets(User $user): float
     {
@@ -54,20 +53,24 @@ class TicketService
         // Calcule et retourne le montant total des tickets pour un utilisateur
         return array_reduce(
             $tickets,
-            fn($sum, $ticket) => $sum + $ticket->getAmount(),
+            fn ($sum, $ticket) => $sum + $ticket->getAmount(),
             0
         );
     }
 
-
+    /**
+     * @param Ticket[]|null $tickets
+     * @return float
+     */
     private function calculateTotalAmount(?array $tickets): float
     {
         if (!$tickets) {
             return 0;
         }
+
         return array_reduce(
             $tickets,
-            fn($sum, $ticket) => $sum + $ticket->getAmount(),
+            fn ($sum, $ticket) => $sum + $ticket->getAmount(),
             0
         );
     }
@@ -91,8 +94,11 @@ class TicketService
             return null;
         }
 
-        $filename = '/tmp/tickets_home_' . $home->getId() . '_' . date('Y-m') . '.csv';
+        $filename = '/tmp/tickets_home_'.$home->getId().'_'.date('Y-m').'.csv';
         $handle = fopen($filename, 'w');
+        if ($handle === false){
+            throw new Exception('Impossible d\'ouvrir le fichier');
+        }
 
         // En-têtes
         fputcsv($handle, ['ID', 'Date', 'Montant', 'Utilisateur']);
@@ -102,15 +108,14 @@ class TicketService
                 $ticket->getId(),
                 $ticket->getCreatedAt()->format('Y-m-d H:i:s'),
                 number_format($ticket->getAmount(), 2, ',', ' '),
-                $ticket->getUser()->getUsername()
+                $ticket->getUser()->getUsername(),
             ]);
         }
 
         fclose($handle);
+
         return $filename;
     }
-
-
 
     public function generatePdfForHome(Home $home): ?string
     {
@@ -160,15 +165,9 @@ class TicketService
         $dompdf->render();
 
         // Enregistrer le fichier PDF temporairement
-        $pdfPath = '/tmp/tickets_home_' . $home->getId() . '_' . date('Y-m') . '.pdf';
+        $pdfPath = '/tmp/tickets_home_'.$home->getId().'_'.date('Y-m').'.pdf';
         file_put_contents($pdfPath, $dompdf->output());
 
         return $pdfPath;
     }
-
-
-
-
-
-
 }
