@@ -19,7 +19,7 @@ class TicketService
         $this->em = $em;
     }
 
-    public function subtractionOfTicketsAmount(User $connectedUser): string | float
+    public function subtractionOfTicketsAmount(User $connectedUser): string|float
     {
         $homeId = $connectedUser->getHome();
 
@@ -60,7 +60,6 @@ class TicketService
 
     /**
      * @param Ticket[]|null $tickets
-     * @return float
      */
     private function calculateTotalAmount(?array $tickets): float
     {
@@ -96,7 +95,7 @@ class TicketService
 
         $filename = '/tmp/tickets_home_'.$home->getId().'_'.date('Y-m').'.csv';
         $handle = fopen($filename, 'w');
-        if ($handle === false){
+        if (false === $handle) {
             throw new Exception('Impossible d\'ouvrir le fichier');
         }
 

@@ -29,7 +29,6 @@ class TotalAmountController extends AbstractController
 
         $home = $user->getHome();
 
-
         if (empty($home)) {
             $this->addFlash('danger', 'L\'utilisateur n\'a pas de Home attribué.');
 

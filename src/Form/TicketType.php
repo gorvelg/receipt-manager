@@ -34,7 +34,6 @@ class TicketType extends AbstractType
 
         $homeId = $connectedUser->getHome() ? $connectedUser->getHome()->getId() : null;
 
-
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Enseigne',

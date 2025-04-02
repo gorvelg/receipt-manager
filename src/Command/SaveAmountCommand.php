@@ -70,10 +70,9 @@ class SaveAmountCommand extends Command
                 foreach ($users as $currentUser) {
                     $otherUser = $users[0] === $currentUser ? $users[1] : $users[0];
                     $due = (
-                            (float) $this->ticketService->subtractionOfTicketsAmount($currentUser)
-                            - (float) $this->ticketService->subtractionOfTicketsAmount($otherUser)
-                        ) / 2;
-
+                        (float) $this->ticketService->subtractionOfTicketsAmount($currentUser)
+                        - (float) $this->ticketService->subtractionOfTicketsAmount($otherUser)
+                    ) / 2;
 
                     $this->mail->sendMail(
                         user: $currentUser,

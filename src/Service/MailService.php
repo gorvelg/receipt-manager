@@ -16,12 +16,9 @@ class MailService
     }
 
     /**
-     * @param User $user
-     * @param string $subject
-     * @param string $template
-     * @param array<string, mixed> $context
+     * @param array<string, mixed>                   $context
      * @param array{path: string, name: string}|null $attachment
-     * @return void
+     *
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function sendMail(

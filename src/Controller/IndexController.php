@@ -29,7 +29,7 @@ class IndexController extends AbstractController
 
         $user = $this->getUser();
 
-        if (!$user instanceof User){
+        if (!$user instanceof User) {
             throw $this->createAccessDeniedException('Utilisateur invalide.');
         }
         $home = $user->getHome();
@@ -65,12 +65,11 @@ class IndexController extends AbstractController
         $tickets = $this->em->getRepository(Ticket::class)->findAll();
         $user = $this->getUser();
 
-        if (!$user instanceof User){
+        if (!$user instanceof User) {
             throw $this->createAccessDeniedException('Utilisateur invalide.');
         }
         $total = $this->ticketService->subtractionOfTicketsAmount($user);
 
-
-        return new Response((string)$total, Response::HTTP_OK);
+        return new Response((string) $total, Response::HTTP_OK);
     }
 }

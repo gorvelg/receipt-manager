@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\TicketType;
-use App\Service\TicketService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +17,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class TicketController extends AbstractController
 {
     private EntityManagerInterface $em;
-
 
     public function __construct(EntityManagerInterface $em)
     {
