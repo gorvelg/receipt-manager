@@ -22,7 +22,7 @@ jobs:
         run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
 
       - name: Run PHP lint
-        run: find src tests -name "*.php" -exec php -l {} \\;
+        run: find src tests -name "*.php" -exec php -l {} \;
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse
