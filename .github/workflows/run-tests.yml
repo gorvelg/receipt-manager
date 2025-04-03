@@ -28,7 +28,7 @@ jobs:
         run: ./vendor/bin/phpstan analyse
 
       - name: Run PHPUnit
-        run: ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+        run: ./vendor/bin/phpunit --coverage-text=php://stdout --coverage-clover=coverage.xml
 
       - name: Audit de sécurité
         run: composer audit --format=json --no-interaction
