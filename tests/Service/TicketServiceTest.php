@@ -47,7 +47,7 @@ class TicketServiceTest extends TestCase
                 return match ($entityClass) {
                     User::class => $userRepo,
                     // Ticket repository plus utilisé ici car on passe par $user->getTickets()
-                    default => throw new \Exception("Unexpected repository: " . $entityClass),
+                    default => throw new \Exception('Unexpected repository: '.$entityClass),
                 };
             });
 

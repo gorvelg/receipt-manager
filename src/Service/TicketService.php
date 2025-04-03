@@ -7,7 +7,6 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
-use Dompdf\Exception;
 use Dompdf\Options;
 
 class TicketService
@@ -56,7 +55,6 @@ class TicketService
         );
     }
 
-
     /**
      * @param Ticket[]|null $tickets
      */
@@ -72,7 +70,6 @@ class TicketService
             0
         );
     }
-
 
     public function generatePdfForHome(Home $home): ?string
     {
