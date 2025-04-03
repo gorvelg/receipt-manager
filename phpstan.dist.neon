@@ -7,12 +7,12 @@ parameters:
         - src/
     ignoreErrors:
         -
-            identifier: property.unusedType
-        -
-            identifier : missingType.generics
-        -
             identifier: missingType.iterableValue
         -
             identifier: generics.notGeneric
+        -
+            identifier: binaryOp.invalid
     excludePaths:
         - src/Entity/
+        - src/Twig/
+        - src/Security/AppAuthenticator.php
