@@ -47,16 +47,15 @@ class TicketService
 
     private function getUserTickets(User $user): float
     {
-        // Utilise la méthode getUserTickets pour obtenir le montant pour chaque utilisateur
-        $tickets = $this->em->getRepository(Ticket::class)->findBy(['user' => $user]);
+        $tickets = $user->getTickets()->toArray();
 
-        // Calcule et retourne le montant total des tickets pour un utilisateur
         return array_reduce(
             $tickets,
             fn ($sum, $ticket) => $sum + $ticket->getAmount(),
             0
         );
     }
+
 
     /**
      * @param Ticket[]|null $tickets
@@ -74,47 +73,6 @@ class TicketService
         );
     }
 
-    public function generateCsvForHome(Home $home): ?string
-    {
-        $users = $home->getUsers();
-
-        if ($users->isEmpty()) {
-            return null;
-        }
-
-        // Récupérer tous les tickets avant suppression
-        $tickets = $this->em->getRepository(Ticket::class)->createQueryBuilder('t')
-            ->where('t.user IN (:users)')
-            ->setParameter('users', $users)
-            ->getQuery()
-            ->getResult();
-
-        if (empty($tickets)) {
-            return null;
-        }
-
-        $filename = '/tmp/tickets_home_'.$home->getId().'_'.date('Y-m').'.csv';
-        $handle = fopen($filename, 'w');
-        if (false === $handle) {
-            throw new Exception('Impossible d\'ouvrir le fichier');
-        }
-
-        // En-têtes
-        fputcsv($handle, ['ID', 'Date', 'Montant', 'Utilisateur']);
-
-        foreach ($tickets as $ticket) {
-            fputcsv($handle, [
-                $ticket->getId(),
-                $ticket->getCreatedAt()->format('Y-m-d H:i:s'),
-                number_format($ticket->getAmount(), 2, ',', ' '),
-                $ticket->getUser()->getUsername(),
-            ]);
-        }
-
-        fclose($handle);
-
-        return $filename;
-    }
 
     public function generatePdfForHome(Home $home): ?string
     {
