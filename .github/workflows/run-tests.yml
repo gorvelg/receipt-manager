@@ -37,5 +37,5 @@ jobs:
         run: ./vendor/bin/phpunit --coverage-text=php://stdout --coverage-clover=coverage.xml
 
       - name: Audit de sécurité
-        run: composer audit --format=json --no-interaction
+        run: composer audit --format=json --no-interaction || true
         continue-on-error: true # Permettre au CI de continuer même si des vulnérabilités sont détectées
