@@ -55,14 +55,13 @@ class SaveAmountCommand extends Command
 
             // Vérifie si le cronDay correspond à aujourd'hui
             if ($cronDay === (int) $today->format('d')) {
-                $usersHome = $home->getUsers();
+                $users = $home->getUsers()->toArray();
 
-                if (2 !== count($usersHome)) {
+                if (2 !== count($users)) {
                     $output->writeln(sprintf('<comment>La Home ID %d ne contient pas exactement 2 utilisateurs.</comment>', $home->getId()));
                     continue;
                 }
 
-                $users = $usersHome->toArray();
 
                 $pdfPath = $this->ticketService->generatePdfForHome($home);
 
@@ -71,8 +70,7 @@ class SaveAmountCommand extends Command
                     $otherUser = $users[0] === $currentUser ? $users[1] : $users[0];
                     $due = (
                         (float) $this->ticketService->subtractionOfTicketsAmount($currentUser)
-                        - (float) $this->ticketService->subtractionOfTicketsAmount($otherUser)
-                    ) / 2;
+                    );
 
                     $this->mail->sendMail(
                         user: $currentUser,
