@@ -1,0 +1,18 @@
+parameters:
+    level: 7
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+    ignoreErrors:
+        -
+            identifier: missingType.iterableValue
+        -
+            identifier: generics.notGeneric
+        -
+            identifier: binaryOp.invalid
+    excludePaths:
+        - src/Entity/
+        - src/Twig/
+        - src/Security/AppAuthenticator.php

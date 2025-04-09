@@ -25,7 +25,7 @@ class UserController extends AbstractController
         $users = $this->em->getRepository(User::class)->findAll();
 
         return $this->render('admin/user/get.html.twig', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -53,5 +53,4 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
-
 }

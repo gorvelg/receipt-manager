@@ -27,9 +27,8 @@ class RegistrationController extends AbstractController
         AppAuthenticator $authenticator,
         EntityManagerInterface $entityManager,
         TokenGeneratorInterface $tokenGenerator,
-        MailService $mail
-    ): Response
-    {
+        MailService $mail,
+    ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -53,7 +52,7 @@ class RegistrationController extends AbstractController
             $url = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
             $context = [
                 'url' => $url,
-                'username' => $user->getUsername()
+                'username' => $user->getUsername(),
             ];
             // do anything else you need here, like send an email
             $mail->sendMail(
@@ -65,11 +64,11 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('app_admin_get_user');
 
-//            return $userAuthenticator->authenticateUser(
-//                $user,
-//                $authenticator,
-//                $request
-//            );
+            //            return $userAuthenticator->authenticateUser(
+            //                $user,
+            //                $authenticator,
+            //                $request
+            //            );
         }
 
         return $this->render('registration/register.html.twig', [

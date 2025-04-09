@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Ticket;
 use App\Entity\TotalAmount;
 use App\Entity\User;
-use App\Message\SaveAmountMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TotalAmountController extends AbstractController
@@ -20,13 +17,21 @@ class TotalAmountController extends AbstractController
     {
         $this->em = $em;
     }
+
     #[Route('/archive', name: 'app_archive')]
     public function index(): Response
     {
-        $home = $this->getUser()->getHome();
+        $user = $this->getUser();
 
-        if (empty($home)){
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('Utilisateur non valide.');
+        }
+
+        $home = $user->getHome();
+
+        if (empty($home)) {
             $this->addFlash('danger', 'L\'utilisateur n\'a pas de Home attribué.');
+
             return $this->render('errors/error.html.twig', [
             ]);
         }
@@ -34,15 +39,14 @@ class TotalAmountController extends AbstractController
         $homeId = $home->getId();
 
         $usersInHome = $this->em->getRepository(User::class)->findBy(['home' => $homeId]);
-        $userIds = array_map(fn($user) => $user->getId(), $usersInHome);
+        $userIds = array_map(fn ($user) => $user->getId(), $usersInHome);
 
         $archives = $this->em->getRepository(TotalAmount::class)->findBy([
-            'user' => $userIds
+            'user' => $userIds,
         ]);
 
         return $this->render('total_amount/index.html.twig', [
             'archives' => $archives,
         ]);
     }
-
 }

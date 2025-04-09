@@ -15,8 +15,8 @@ class CreateNewPasswordType extends AbstractType
             ->add('password', PasswordType::class, [
                 'label' => 'Nouveau mot de passe',
                 'attr' => [
-                    'placeholder' => 'Saisir le nouveau mot de passe'
-                ]
+                    'placeholder' => 'Saisir le nouveau mot de passe',
+                ],
             ])
         ;
     }

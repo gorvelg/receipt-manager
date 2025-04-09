@@ -4,28 +4,30 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    version: '1.5.6'
     pictures_directory: '%kernel.project_dir%/public/uploads/pictures'
+    store_logos_dir: 'images/store_logos/'
     store_logos:
-        "leclerc": "images/store_logos/leclerc.png"
-        "carrefour": "images/store_logos/carrefour.png"
-        "auchan": "images/store_logos/auchan.png"
-        "intermarche": "images/store_logos/intermarche.png"
-        "casino": "images/store_logos/casino.png"
-        "aldi": "images/store_logos/aldi.png"
-        "lidl": "images/store_logos/lidl.png"
-        "super u": "images/store_logos/super_u.png"
-        "colruyt": "images/store_logos/colruyt.png"
-        "monoprix": "images/store_logos/monoprix.png"
-        "decathlon": "images/store_logos/decathlon.png"
-        "marie blachere": "images/store_logos/marie_blachere.png"
-        "ange": "images/store_logos/ange.png"
-        "brico depot": "images/store_logos/brico_depot.png"
-        "grand frais": "images/store_logos/grand_frais.png"
-        "picard": "images/store_logos/picard.png"
-        "fnac": "images/store_logos/fnac.png"
-        "action": "images/store_logos/action.png"
-        "edf": "images/store_logos/edf.png"
-        "orange": "images/store_logos/orange.png"
+        "leclerc": "%store_logos_dir%leclerc.png"
+        "carrefour": "%store_logos_dir%carrefour.png"
+        "auchan": "%store_logos_dir%auchan.png"
+        "intermarche": "%store_logos_dir%intermarche.png"
+        "casino": "%store_logos_dir%casino.png"
+        "aldi": "%store_logos_dir%aldi.png"
+        "lidl": "%store_logos_dir%lidl.png"
+        "super u": "%store_logos_dir%super_u.png"
+        "colruyt": "%store_logos_dir%colruyt.png"
+        "monoprix": "%store_logos_dir%monoprix.png"
+        "decathlon": "%store_logos_dir%decathlon.png"
+        "marie blachere": "%store_logos_dir%marie_blachere.png"
+        "ange": "%store_logos_dir%ange.png"
+        "brico depot": "%store_logos_dir%brico_depot.png"
+        "grand frais": "%store_logos_dir%grand_frais.png"
+        "picard": "%store_logos_dir%picard.png"
+        "fnac": "%store_logos_dir%fnac.png"
+        "action": "%store_logos_dir%action.png"
+        "edf": "%store_logos_dir%edf.png"
+        "orange": "%store_logos_dir%orange.png"
 
 services:
     # default configuration for services in *this* file
